@@ -2,7 +2,9 @@
   <div class="ztxq_box">
     <div class="ztxq_div_1">
       <span>
-       <router-link to="/home"><i class="el-icon-arrow-left"></i></router-link>
+        <router-link to="/home">
+          <i class="el-icon-arrow-left"></i>
+        </router-link>
       </span>
       <span>专题详情</span>
       <span></span>
@@ -15,8 +17,8 @@
       <p style="width:1.5rem;height:0.04rem;background:#BB9161;margin:0.2rem auto;"></p>
       <img :src="Ztxq.pic" alt width="100%;" />
       <div class="content_goods" v-html="Ztxq.content"></div>
+      <cnxh></cnxh>
     </div>
-    <cnxh></cnxh>
   </div>
 </template>
 

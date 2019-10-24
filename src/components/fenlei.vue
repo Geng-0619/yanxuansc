@@ -13,13 +13,17 @@
       </div>
       <div class="fl_cont_t" v-show="flge">
         <span class="fl_cont_r" v-for="(item,i) in Fel" :key="i">
-          <img :src="item.icon" alt />
+          <router-link :to="{path:'/shangpinxq',query:{id:item.id}}">
+            <img :src="item.icon" alt />
+          </router-link>
           {{ item.name }}
         </span>
       </div>
       <div class="fl_cont_t" v-show="!flge">
         <span class="fl_cont_r" v-for="(item,i) in arr1" :key="i">
-          <img :src="item.icon" alt />
+          <router-link :to="{path:'/shangpinxq',query:{id:item.id}}">
+            <img :src="item.icon" alt />
+          </router-link>
           {{ item.name }}
         </span>
       </div>
@@ -46,16 +50,15 @@ export default {
   methods: {
     ssq(n, i) {
       this.flge = false;
-    //   this.ms = n;
+      //   this.ms = n;
       let index = this.qb.findIndex(item => {
         return item.name == n;
       });
-    //   console.log(index);
+      //   console.log(index);
       this.arr1 = this.qb.filter((v, i) => {
         return v.pid == this.qb[index].id;
       });
-        // console.log(this.arr1);
-    
+      // console.log(this.arr1);
     },
     ss(el) {
       this.ms = el.target.innerHTML;
@@ -67,14 +70,14 @@ export default {
   },
   created() {
     _product.fenlei().then(res => {
-      console.log(res.data.data)
+      console.log(res.data.data);
       this.qb = res.data.data;
       res.data.data.map(item => {
         if (item.pid == 0) {
           this.Fenl.push(item.name);
         }
       });
-    //   console.log(this.Fenl)
+      //   console.log(this.Fenl)
       this.Fel = res.data.data.filter(item => {
         return item.pid != 0;
       });
@@ -108,7 +111,7 @@ export default {
   line-height: 1rem;
 }
 .fl_cont {
-    // display: flex;
+  // display: flex;
   //   flex: 1;
   width: 100%;
   min-height: 101%;

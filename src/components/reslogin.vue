@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>新用户注册</div>
-    <div></div>
+    <div style="padding:0.4rem 0 0 0.6rem;color:#B3B3B3;">新用户注册</div>
+    <div style="font-size:0.2rem;color:#C0C0C0;padding:0.4rem 0.6rem;">(注册只需要一步)</div>
     <input type="text" v-model="phone" placeholder="手机号" />
     <br />
     <input type="text" v-model="pass" placeholder="密码" />
@@ -10,15 +10,63 @@
     <br />
     <input type="text" v-model="user" placeholder="用户名" />
     <br />
-    <input type="text" v-model="tyzm" placeholder="图形验证码" style="width:35%;margin:0 0 0 35px;" />
-    <img :src="urlData" alt @click="qiehuan" style="width:3rem;" />
+    <input
+      type="text"
+      v-model="tyzm"
+      placeholder="图形验证码"
+      style="width:35%;margin:0 0 0 35px;float:left;margin-top:10px;"
+    />
+    <img
+      :src="urlData"
+      alt
+      @click="qiehuan"
+      style="width:3rem;float:left;height:0.9rem;margin-top:10px;"
+    />
+    <p style="clear: both;"></p>
     <br />
-    <input type="text" v-model="yzm" placeholder="验证码" />
-    <button @click="hqyzm">点击获取验证码</button>
+    <div>
+      <button class="type1" @click="showVuePopup(true)">vue transition</button>
+      <div class="vue-popup">
+        <div class="mask" v-show="show2" @click="showVuePopup(false)"></div>
+        <transition name="slide">
+          <div class="popup-content" v-show="show2">
+            <div style="border-right:1px solid #ccc;overflow: auto;">
+              <option
+                @click="shi(item.id)"
+                value="item.name"
+                v-for="item in shengfen"
+              >{{item.name}}</option>
+            </div>
+            <div style="overflow: auto;">
+              <option value="item.name" v-for="item in shil">
+                {{item.name}}
+              </option>
+            </div>
+          </div>
+        </transition>
+      </div>
+    </div>
     <br />
-    <button @click="zc">立即注册</button>
+    <input
+      style="height:30px;width:40%;margin:20px 0 0 35px;float:left;"
+      type="text"
+      v-model="yzm"
+      placeholder="验证码"
+    />
+    <input
+      style="height:45px;width:35%;margin:20px 0 0 0;float:left;border-left:1px solid #ccc;"
+      type="button"
+      value="点击获取验证码"
+      @click="hqyzm"
+      name
+      id
+    />
     <br />
-    <p>已有证号？立即登录</p>
+    <button @click="zc" class="btn_login">立即注册</button>
+    <br />
+    <router-link to="/login">
+      <p style="text-align:center;font-size:0.26rem;color:#549FF9;">已有证号？立即登录</p>
+    </router-link>
   </div>
 </template>
 
@@ -39,29 +87,46 @@ export default {
       ss: "",
       hqyzm1: "",
       urlData: "",
-      time:''
+      time: "",
+      shengfen: "",
+      show: false,
+      show2: false,
+      shil:[]
     };
   },
   methods: {
     zc() {
-        if(this.pass == this.pass1){
-           axios.post(`https://api.it120.cc/small4/verification/sms/check?mobile=${this.phone}&code=${this.yzm}`).then(res=>{
-              if(res.data.code == 0){
-                  axios.post(`https://api.it120.cc/small4/user/m/register?mobile=${this.phone}&pwd=${this.pass}&code=${this.yzm}&nick=${this.user}`).then(res=>{
-                    console.log(res)
-                  })
-              }else{
-                console.log(555555)
-              }
-          })
-        }else{
-          console.log('密码不对')
-          return;
-        }
+      if (this.pass == this.pass1) {
+        axios
+          .post(
+            `https://api.it120.cc/small4/verification/sms/check?mobile=${this.phone}&code=${this.yzm}`
+          )
+          .then(res => {
+            if (res.data.code == 0) {
+              axios
+                .post(
+                  `https://api.it120.cc/small4/user/m/register?mobile=${this.phone}&pwd=${this.pass}&code=${this.yzm}&nick=${this.user}`
+                )
+                .then(res => {
+                  console.log(res);
+                  if (res.data.code != 0) {
+                    this.$router.push({
+                      path: "/login"
+                    });
+                  }
+                });
+            } else {
+              // console.log(555555)
+            }
+          });
+      } else {
+        console.log("密码不对");
+        return;
+      }
     },
     hqyzm() {
       let mobile = this.phone;
-      let txyzm = this.tyzm
+      let txyzm = this.tyzm;
       // axios.post(`https://api.it120.cc/small4/verification/pic/get?key=${this.time}`).then(res=>{
       //   console.log(res)
       // })
@@ -78,11 +143,14 @@ export default {
       // });
     },
     qiehuan() {
-      this.time = new Date().getTime()
+      this.time = new Date().getTime();
       axios
-        .get(`https://api.it120.cc/small4/verification/pic/get?key=${this.time}`, {
-          responseType: "arraybuffer"
-        })
+        .get(
+          `https://api.it120.cc/small4/verification/pic/get?key=${this.time}`,
+          {
+            responseType: "arraybuffer"
+          }
+        )
         .then(response => {
           // console.log(111111111);
           // console.log(
@@ -97,6 +165,22 @@ export default {
           // );
           // console.log(this.urlData)
         });
+    },
+    showCssPopup(flag) {
+      this.show = flag;
+    },
+    showVuePopup(flag) {
+      this.show2 = flag;
+    },
+    shi(n){
+      // console.log(n)
+      // console.log(this.shengfen)
+      this.shil=[]
+      axios.get(`https://api.it120.cc/common/region/child?pid=${n}`).then(res => {
+        // console.log(res.data.data)
+        this.shil = res.data.data;
+        // console.log(this.shil)
+      })
     }
   },
   created() {
@@ -108,11 +192,14 @@ export default {
     //   this.urlData = window.URL.createObjectURL(res.data);
     //   console.log(this.urlData);
     // });
-        this.time = new Date().getTime()
+    this.time = new Date().getTime();
     axios
-      .get(`https://api.it120.cc/small4/verification/pic/get?key=${this.time}`, {
-        responseType: "arraybuffer"
-      })
+      .get(
+        `https://api.it120.cc/small4/verification/pic/get?key=${this.time}`,
+        {
+          responseType: "arraybuffer"
+        }
+      )
       .then(response => {
         // console.log(111111111);
         // console.log(
@@ -138,6 +225,11 @@ export default {
     //     )
     //   );
     // });
+    axios.post("https://api.it120.cc/common/region/province").then(res => {
+      //  console.log(res.data)
+      this.shengfen = res.data.data;
+      // console.log(this.shengfen.data[0].pid);
+    });
   }
 };
 </script>
@@ -163,5 +255,104 @@ input {
 }
 input::-webkit-input-placeholder {
   font-size: 16px;
+}
+.btn_login {
+  // background: linear-gradient(to right, #F1EAD8 0%, #FEFBF2 100%);
+  width: 55%;
+  height: 0.7rem;
+  border: none;
+  border-radius: 5px;
+  margin: 0.3rem 1.6rem;
+  background: linear-gradient(to right, #67a2f7 0%, #b389f6 100%);
+}
+.xn-container {
+  height: 100%;
+}
+button {
+  display: block;
+  width: 300px;
+  height: 44px;
+  margin: 20px auto;
+  border-radius: 4px;
+  background-color: #3884ff;
+  color: #fff;
+}
+.css-popup {
+  .popup-content {
+    position: absolute;
+    height: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    box-sizing: border-box;
+    &.show {
+      height: 400px;
+    }
+  }
+}
+.vue-popup {
+  .popup-content {
+    position: absolute;
+    height: 400px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    display: flex;
+    div {
+      width: 50%;
+    }
+  }
+}
+.mask {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease-in;
+}
+
+.slide-enter-active {
+  animation-name: slideInUp;
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+}
+.slide-leave-active {
+  animation-name: slideOutDown;
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+}
+@keyframes slideInUp {
+  0% {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translateZ(0);
+  }
+}
+@keyframes slideOutDown {
+  0% {
+    transform: translateZ(0);
+  }
+
+  to {
+    visibility: hidden;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+.delay-leave-active {
+  -webkit-animation-delay: 0.2s;
+  -moz-animation-delay: 0.2s;
+  -o-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 </style>

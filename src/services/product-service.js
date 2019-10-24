@@ -54,6 +54,16 @@ class Product {
         })
     }
 
+    shangpinxq(productId){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/detail',
+            data:{
+                id: productId
+            }
+        })
+    }
+
     // tuxingyanz(){
     //     return _http.request({
     //         type: 'post',

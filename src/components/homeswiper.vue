@@ -3,7 +3,9 @@
     <div style="height:7.5rem;">
       <swiper :options="swiperOption">
         <swiper-slide v-for="(item,index) in arr" :key="index">
-          <a href="https://www.baidu.com/"><img :src="item.picUrl" style="height:8rem" alt  /></a>
+          <a href="https://www.baidu.com/">
+            <img :src="item.picUrl" style="height:8rem" alt />
+          </a>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
         <div class="swiper-button-prev" slot="button-prev"></div>
@@ -47,15 +49,18 @@ export default {
   data() {
     return {
       swiperOption: {
+         loop: true,
+        //   notNextTick: true,
+        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true, //修改swiper的父元素时，自动初始化swiper
         pagination: {
           el: ".swiper-pagination",
           clickable: true // 允许点击小圆点跳转
         },
         autoplay: {
-          delay: 3000,
-          disableOnInteraction: true // 手动切换之后继续自动轮播
+          delay: 2000,
+          disableOnInteraction: false // 手动切换之后继续自动轮播
         },
-        loop: true,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
