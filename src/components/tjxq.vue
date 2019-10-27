@@ -48,20 +48,66 @@
       <div v-show="!Goodshow"></div>
     </div>
     <!--  -->
-     <div class="footerGoods">
-        <div style="width:1.08rem;height:100%;font-size:24px;"><i class="el-icon-service"></i></div>
-        <div style="width:1.08rem;height:100%;font-size:24px;"><i class="el-icon-shopping-cart-full"></i></div>
-        <div style="width:1.08rem;height:100%;font-size:24px;"><i class="el-icon-star-off"></i></div>
-        <div style="width:2.12rem;height:100%;">立即购买</div>
-        <div style="width:2.12rem;height:100%;">加入购物车</div>
+    <div class="footerGoods">
+      <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
+        <i class="el-icon-service"></i>
+      </div>
+      <router-link to="/cart">
+        <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
+          <i class="el-icon-shopping-cart-full">{{ NumStore }}</i>
+        </div>
+      </router-link>
+      <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
+        <i class="el-icon-star-off"></i>
+      </div>
+      <div style="width:2.12rem;height:100%; border: 0.01rem solid gray;">立即购买</div>
+      <div
+        @click="AddItem()"
+        style="width:2.12rem;height:100%; border: 0.01rem solid gray;background:#B7282E;color:#fff;"
+      >加入购物车</div>
+    </div>
+
+    <div class="cartTjxq" v-show="Tjcart">
+      <div class="cartTjxq_h">
+        <div style="width:20%;">
+          <img :src="ztxq.basicInfo.pic" class="cartTjxq_hIng" alt />
+        </div>
+        <div style="width:60%;">
+          <span style="float:left;">{{ ztxq.basicInfo.name }}</span>
+          <br />
+          <span style="float:left;">{{ ztxq.basicInfo.minPrice }}</span>
+        </div>
+        <div style="width:20%;">
+          <span @click="QxcartTjxq">X</span>
+        </div>
+      </div>
+      <div class="cartTjxq_c">
+        <p>{{ ztxq.properties[0].name }}</p>
+        <li v-for="(item,index) in ztxq.properties[0].childsCurGoods" :key="index"  @click="priceZx(item)">{{ item.name }}</li>
+        
+        <div v-if
+        ="ztxq.properties.length >1">
+          <p>{{ ztxq.properties[1].name }}</p>
+        <li v-for="(item,index) in ztxq.properties[1].childsCurGoods" >{{ item.name }}</li>
+        </div>
+        
+        <p style="border-bottom: 1px solid #ccc;height:0.1rem;margin-top:0.4rem;"></p>
+        <div style="display: flex;justify-content: space-between; align-items: center;">
+          <p>购买数量</p>
+          <el-input-number v-model="num" :min="1" label="描述文字"></el-input-number>
+        </div>
+      </div>
+      <div class="cartTjxq_f" @click="AddCartI()">加入购物车</div>
     </div>
   </div>
 </template>
 
 <script>
+import "../css/tjxq.scss";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import Product from "../services/product-service.js";
 const _product = new Product();
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -81,69 +127,80 @@ export default {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         }
-      }
+      },
+      Tjcart: false,
+      num: 1,
+      GoodsId:"",
+      SizeId:"",
+      ColId:"",
+      nameGs:""
     };
   },
   created() {
     // console.log(this.$route.query)
     let { id } = this.$route.query;
+    this.GoodsId = id
+    // console.log(this.GoodsId)
     _product.detail(id).then(res => {
-      //   console.log(res.data.data);
+      // console.log(res.data.data);
       this.ztxq = res.data.data;
-      //   console.log(this.ztxq);
+      // console.log(this.ztxq.properties.length)
+      // console.log(res.data.data);
+      // axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=`).then(res => {
+      //   console.log(res)
+      // })
     });
+  },
+  computed:{
+    NumStore(){
+      return this.$store.state.NumStore
+    }
+  },
+  methods: {
+    AddItem() {
+      this.Tjcart = true;
+    },
+    QxcartTjxq() {
+      this.Tjcart = false;
+    },
+    priceZx(n){
+      this.SizeId = n.id;
+      this.ColId = this.ztxq.properties[0].id;
+      this.nameGs = n.name
+      // console.log(this.ztxq.basicInfo.id)
+      // console.log(n)
+      // console.log(this.ztxq.properties[0].id)
+      // axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=${this.ztxq.basicInfo.id}&propertyChildIds=${n},${this.ztxq.properties[0].id}`).then(res => {
+      //   console.log(res)
+      // })
+    },
+    AddCartI(){
+       axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.SizeId},${this.ColId}`).then(res => {
+        // console.log(res.data.data)
+        // this.$store.state.PriceGoods = res.data.data.price
+        let arr = JSON.parse(localStorage.getItem('Cart'))
+        if(arr == null){
+          let box=[]
+          localStorage.setItem('Cart',JSON.stringify(box))
+        }else{
+          this.$store.state.CartItem = JSON.parse(localStorage.getItem('Cart'))
+        }
+
+        let obj = {
+          images:this.ztxq.basicInfo.pic,
+          nameGoods:this.nameGs,
+          titleGoods:this.ztxq.basicInfo.name,
+          priceGoods:res.data.data.price,
+          numGoods:this.num,
+          Goodscheck:false
+        }
+        this.$store.commit('AddCartI',obj)
+        this.Tjcart = false;
+      })
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.qmkj_kk {
-  //   background: #fff;
-  z-index: 999;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  width: 1rem;
-  text-align: center;
-}
-.xq_goods {
-  display: inline-block;
-  background: #fff;
-  width: 0.7rem;
-  height: 0.7rem;
-  border-radius: 50%;
-  margin-top: 0.1rem;
-  text-align: center;
-  line-height: 0.7rem;
-}
-.Goods_nav {
-  width: 100%;
-  box-sizing: border-box;
-  height: 1rem;
-  display: flex;
-  div {
-    width: 50%;
-    text-align: center;
-    box-sizing: border-box;
-    line-height: 1rem;
-  }
-}
-.red {
-  border-bottom: 3px solid red;
-}
-.content_goods {
-  font-size: 14px;
-}
-.footerGoods {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #ccc;
-  height: 1rem;
-  font-size: 14px;
-  color: #fff;
-  text-align: center;
-  box-sizing: border-box;
-  line-height: 1rem;
-  display: flex;
-}
 </style>

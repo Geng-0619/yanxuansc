@@ -14,6 +14,7 @@ import Tjxq from '@/components/tjxq'
 import Login from '@/components/login'
 import Reslogin from '@/components/reslogin'
 import Shangpinxq from '@/components/shangpinxq'
+import Sigin from '@/components/sigin'
 Vue.use(Router)
 
 export default new Router({
@@ -76,6 +77,10 @@ export default new Router({
     {
       path: '/shangpinxq',
       component: Shangpinxq
+    },
+    {
+      path: '/sigin',
+      component: Sigin
     },
     
   ]

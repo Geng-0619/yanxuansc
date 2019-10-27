@@ -15,6 +15,10 @@
     <div v-show="spxqSh" style="margin:70% 0;text-align:center">
       <h1>还没有商品呢</h1>
     </div>
+    <div v-for="(item,i) in SpXq" :key="i">
+      <img :src="item.pic" alt="">
+      {{item.name}}
+    </div>
   </div>
 </template>
 
@@ -25,17 +29,19 @@ export default {
   name: "shangpinxq",
   data() {
     return {
-      spxqSh: false
+      spxqSh: false,
+      SpXq:[]
     };
   },
   created() {
-    let { id } = this.$route.query;
+    let  id  = this.$route.query.id;
     console.log(id);
-    _product.shangpinxq(id).then(res => {
-      console.log(res);
-      if (res.data.code == 404) {
-        this.spxqSh = true;
-      }
+    _product.propTj().then(res => {
+      // console.log(res.data.data);
+      this.SpXq = res.data.data.filter(item => {
+        return item.categoryId == id
+      })
+      // console.log(this.SpXq)
     });
   }
 };

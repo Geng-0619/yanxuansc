@@ -57,9 +57,18 @@ a {
 .swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
   bottom: 0.6rem !important;
 }
+.content_goods{
+  padding: 0 0.2rem;
+  box-sizing: border-box;
+}
  .content_goods img{
   width: 100% !important;
   height: 100% !important;
+}
+ .content_goods li{
+   clear: both;
+   /* text-indent: 0.2rem; */
+   padding: 0.3rem 0;
 }
 .child-view {
   position: absolute;

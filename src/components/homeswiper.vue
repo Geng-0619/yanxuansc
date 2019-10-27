@@ -14,10 +14,10 @@
     </div>
     <div class="content-one">
       <ul class="content-one-ul">
-        <li>
+        <router-link to="/sigin" tag="li">
           <img src="../assets/1.jpg" alt />
           <div>签到</div>
-        </li>
+        </router-link>
         <li>
           <img src="../assets/2.jpg" alt />
           <div>礼券</div>
