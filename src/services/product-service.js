@@ -54,6 +54,16 @@ class Product {
         })
     }
 
+    Tok(token){
+        return _http.request({
+            type: 'post',
+            url: 'order/list',
+            data:{
+                token: token
+            }
+        })
+    }
+
     // shangpinxq(productId){
     //     return _http.request({
     //         type: 'post',

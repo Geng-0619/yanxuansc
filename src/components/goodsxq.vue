@@ -132,16 +132,17 @@ export default {
   font-size: 14px;
 }
 .footerGoods{
-     position: fixed;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background: #B7282E;
     height: 1rem;
     font-size: 14px;
     color: #fff;
-    text-align: center;
     box-sizing: border-box;
     line-height: 1rem;
+    text-align: center;
+    display: block;
 }
 
 </style>

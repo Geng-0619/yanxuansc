@@ -60,6 +60,7 @@ export default {
     justify-content: space-around;
     align-items: center;
     background: #fff;
+     border-radius: 0%;
 }
 .jing_zj{
   margin-top:15px;

@@ -67,5 +67,6 @@ export default {
     justify-content: space-around;
     align-items: center;
     background: #fff;
+    border-radius: 0%;
 }
 </style>

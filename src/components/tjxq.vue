@@ -83,14 +83,23 @@
       </div>
       <div class="cartTjxq_c">
         <p>{{ ztxq.properties[0].name }}</p>
-        <li v-for="(item,index) in ztxq.properties[0].childsCurGoods" :key="index"  @click="priceZx(item)">{{ item.name }}</li>
-        
-        <div v-if
-        ="ztxq.properties.length >1">
+        <li
+          v-for="(item,index) in ztxq.properties[0].childsCurGoods"
+          :key="index"
+          @click="priceZx(item,index)"
+          :class="{Goodsred:KeyIndex==index}"
+        >{{ item.name }}</li>
+
+        <div v-if="ztxq.properties.length >1">
           <p>{{ ztxq.properties[1].name }}</p>
-        <li v-for="(item,index) in ztxq.properties[1].childsCurGoods" >{{ item.name }}</li>
+          <li
+            v-for="(v,i) in ztxq.properties[1].childsCurGoods"
+            :key="i"
+            @click="colorZx(v,i)"
+            :class="{Goodsred:KeyIndex1==i}"
+          >{{ v.name }}</li>
         </div>
-        
+
         <p style="border-bottom: 1px solid #ccc;height:0.1rem;margin-top:0.4rem;"></p>
         <div style="display: flex;justify-content: space-between; align-items: center;">
           <p>购买数量</p>
@@ -107,7 +116,7 @@ import "../css/tjxq.scss";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import Product from "../services/product-service.js";
 const _product = new Product();
-import axios from 'axios'
+import axios from "axios";
 export default {
   data() {
     return {
@@ -130,16 +139,19 @@ export default {
       },
       Tjcart: false,
       num: 1,
-      GoodsId:"",
-      SizeId:"",
-      ColId:"",
-      nameGs:""
+      GoodsId: "",
+      SizeId: "",
+      ColId: "",
+      nameGs: "",
+      KeyIndex: -1,
+      KeyIndex1: -1,
+      ColorGoods: ""
     };
   },
   created() {
     // console.log(this.$route.query)
     let { id } = this.$route.query;
-    this.GoodsId = id
+    this.GoodsId = id;
     // console.log(this.GoodsId)
     _product.detail(id).then(res => {
       // console.log(res.data.data);
@@ -151,9 +163,9 @@ export default {
       // })
     });
   },
-  computed:{
-    NumStore(){
-      return this.$store.state.NumStore
+  computed: {
+    NumStore() {
+      return this.$store.state.NumStore;
     }
   },
   methods: {
@@ -163,10 +175,11 @@ export default {
     QxcartTjxq() {
       this.Tjcart = false;
     },
-    priceZx(n){
+    priceZx(n, i) {
       this.SizeId = n.id;
       this.ColId = this.ztxq.properties[0].id;
-      this.nameGs = n.name
+      this.nameGs = n.name;
+      this.KeyIndex = i;
       // console.log(this.ztxq.basicInfo.id)
       // console.log(n)
       // console.log(this.ztxq.properties[0].id)
@@ -174,33 +187,63 @@ export default {
       //   console.log(res)
       // })
     },
-    AddCartI(){
-       axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.SizeId},${this.ColId}`).then(res => {
-        // console.log(res.data.data)
-        // this.$store.state.PriceGoods = res.data.data.price
-        let arr = JSON.parse(localStorage.getItem('Cart'))
-        if(arr == null){
-          let box=[]
-          localStorage.setItem('Cart',JSON.stringify(box))
-        }else{
-          this.$store.state.CartItem = JSON.parse(localStorage.getItem('Cart'))
-        }
-
-        let obj = {
-          images:this.ztxq.basicInfo.pic,
-          nameGoods:this.nameGs,
-          titleGoods:this.ztxq.basicInfo.name,
-          priceGoods:res.data.data.price,
-          numGoods:this.num,
-          Goodscheck:false
-        }
-        this.$store.commit('AddCartI',obj)
-        this.Tjcart = false;
-      })
+    colorZx(v, i) {
+      this.KeyIndex1 = i;
+      this.ColorGoods = v.name;
+    },
+    AddCartI() {
+      axios
+        .post(
+          `https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.SizeId},${this.ColId}`
+        )
+        .then(res => {
+          // console.log(res.data.data)
+          // this.$store.state.PriceGoods = res.data.data.price
+          let arr = JSON.parse(localStorage.getItem("Cart"));
+          if (arr == null) {
+            let box = [];
+            localStorage.setItem("Cart", JSON.stringify(box));
+          } else {
+            this.$store.state.CartItem = JSON.parse(
+              localStorage.getItem("Cart")
+            );
+          }
+          if (this.ztxq.properties.length > 1) {
+            let obj = {
+              images: this.ztxq.basicInfo.pic,
+              nameGoods: this.ztxq.properties[0].name + this.nameGs + this.ColorGoods,
+              titleGoods: this.ztxq.basicInfo.name,
+              priceGoods: res.data.data.price,
+              numGoods: this.num,
+              Goodscheck: false,
+              goodsId:res.data.data.goodsId,
+              propertyChildIds:res.data.data.propertyChildIds
+            };
+            this.$store.commit("AddCartI", obj);
+            this.Tjcart = false;
+          } else {
+            let obj = {
+              images: this.ztxq.basicInfo.pic,
+              nameGoods: this.ztxq.properties[0].name + this.nameGs,
+              titleGoods: this.ztxq.basicInfo.name,
+              priceGoods: res.data.data.price,
+              numGoods: this.num,
+              Goodscheck: false,
+              goodsId:res.data.data.goodsId,
+              propertyChildIds:res.data.data.propertyChildIds
+            };
+            this.$store.commit("AddCartI", obj);
+            this.Tjcart = false;
+          }
+        });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.Goodsred {
+  border: 1px solid red;
+  color: red;
+}
 </style>

@@ -49,7 +49,7 @@ export default {
             // uid
             console.log(res.data.data); 
             this.$store.state.itemToken = res.data.data.token
-            localStorage.setItem('token',JSON.stringify(res.data.data))
+            localStorage.setItem('token',JSON.stringify(res.data.data.token))
             this.$router.push({
               path: "/myhome"
             });

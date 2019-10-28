@@ -22,14 +22,14 @@
           <img src="../assets/2.jpg" alt />
           <div>礼券</div>
         </li>
-        <li>
+        <router-link to="/qmkj" tag="li">
           <img src="../assets/3.jpg" alt />
           <div>砍价</div>
-        </li>
-        <li>
+        </router-link>
+        <router-link to="/jingxuan" tag="li">
           <img src="../assets/4.jpg" alt />
           <div>专栏</div>
-        </li>
+        </router-link>
       </ul>
     </div>
     <p style="width:100%;height:0.4rem;background:#ccc;margin:0;"></p>
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       swiperOption: {
-         loop: true,
+        loop: true,
         //   notNextTick: true,
         observer: true, //修改swiper自己或子元素时，自动初始化swiper
         observeParents: true, //修改swiper的父元素时，自动初始化swiper

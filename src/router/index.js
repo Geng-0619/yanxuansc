@@ -15,6 +15,8 @@ import Login from '@/components/login'
 import Reslogin from '@/components/reslogin'
 import Shangpinxq from '@/components/shangpinxq'
 import Sigin from '@/components/sigin'
+import SubGoods from '@/components/SubGoods'
+import Shouhuo from '@/components/shouhuo'
 Vue.use(Router)
 
 export default new Router({
@@ -81,6 +83,14 @@ export default new Router({
     {
       path: '/sigin',
       component: Sigin
+    },
+    {
+      path: '/SubGoods',
+      component: SubGoods
+    },
+    {
+      path: '/shouhuo',
+      component: Shouhuo
     },
     
   ]
