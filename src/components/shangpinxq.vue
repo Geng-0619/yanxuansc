@@ -17,8 +17,8 @@
 
       <div  class="cont_spxq">
         <div v-for="(item,i) in SpXq" :key="i" style="display:flex;margin-top:0.8rem;flex-direction: column;width:48%;padding-left:0.1rem;">
-          <img :src="item.pic" alt style="width:100%;" />
-          {{item.name}}
+          <router-link :to="{path: '/tjxq',query:{id:item.id}}"><img :src="item.pic" alt style="width:100%;"/></router-link>
+          {{ item.name }}
           <br>
           <span>
             <b style="color:red;">￥{{item.minPrice}}</b>

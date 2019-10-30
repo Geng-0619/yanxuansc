@@ -29,8 +29,8 @@
       <div class="vue-popup">
         <div class="mask" v-show="show2" @click="showVuePopup(false)"></div>
         <!-- <transition name="slide"> -->
-          <!-- <div class="popup-content" v-show="show2"> -->
-            <!-- <div style="border-right:1px solid #ccc;overflow: auto;">
+        <!-- <div class="popup-content" v-show="show2"> -->
+        <!-- <div style="border-right:1px solid #ccc;overflow: auto;">
               <option
                 @click="shi(item.id)"
                 value="item.name"     
@@ -41,26 +41,28 @@
               <option value="item.name" v-for="item in shil">
                 {{item.name}}
               </option>
-            </div> -->
+        </div>-->
 
-            <!-- <el-form-item label="活动区域" :label-width="formLabelWidth"> -->
-            <el-select v-model="shengl" @change="shi()" placeholder="请选择省份">
-              <el-option v-for="(item,key) in shengfen" :key="key" :value="item.name"></el-option>
-            </el-select>
+        <!-- <el-form-item label="活动区域" :label-width="formLabelWidth"> -->
+        <div style="display:flex;padding:0 0.88rem 0 0.7rem;">
+          <el-select v-model="shengl" @change="shi()" placeholder="请选择省份">
+            <el-option v-for="(item,key) in shengfen" :key="key" :value="item.name"></el-option>
+          </el-select>
 
-            <el-select v-model="shil1" placeholder="请选择城市">
-              <el-option v-for="(item,key) in shil" :key="key" :value="item.name"></el-option>
-            </el-select> 
-          <!-- </el-form-item> -->
+          <el-select v-model="shil1" placeholder="请选择城市">
+            <el-option v-for="(item,key) in shil" :key="key" :value="item.name"></el-option>
+          </el-select>
+        </div>
+        <!-- </el-form-item> -->
 
-          <!-- <el-form-item label :label-width="formLabelWidth">
+        <!-- <el-form-item label :label-width="formLabelWidth">
             
 
             <el-select v-model="form.city" placeholder="请选择区县">
               <el-option v-for="(item,key) in s" :key="key" :value="item.area_name"></el-option>
-            </el-select> -->
-          <!-- </el-form-item> -->
-          <!-- </div> -->
+        </el-select>-->
+        <!-- </el-form-item> -->
+        <!-- </div> -->
         <!-- </transition>  -->
       </div>
     </div>
@@ -72,7 +74,7 @@
       placeholder="验证码"
     />
     <input
-      style="height:45px;width:35%;margin:0px 0 0 0;float:left;border-left:1px solid #ccc;"
+      style="height:45px;width:35%;margin:0px 0 0 0;font-size:0.26rem;float:left;border-left:1px solid #ccc;"
       type="button"
       value="点击获取验证码"
       @click="hqyzm"
@@ -97,21 +99,21 @@ export default {
   data() {
     return {
       phone: "", //手机号
-      pass: "",//密码
-      pass1: "",//密码
-      user: "",//用户名
-      tyzm: "",//图形验证码
+      pass: "", //密码
+      pass1: "", //密码
+      user: "", //用户名
+      tyzm: "", //图形验证码
       yzm: "", //手机验证码
       ss: "",
       hqyzm1: "",
       urlData: "",
       time: "", // 时间戳
-      shengfen: "",  //省
+      shengfen: "", //省
       show: false,
       show2: false,
-      shil:[] ,// 市,
-      shengl:"",
-      shil1:"",
+      shil: [], // 市,
+      shengl: "",
+      shil1: ""
     };
   },
   methods: {
@@ -195,21 +197,23 @@ export default {
     showVuePopup(flag) {
       this.show2 = flag;
     },
-    shi(){
+    shi() {
       // console.log(n)
       // console.log(this.shengfen)
       // console.log(this.shengl)
       let index = this.shengfen.filter(item => {
-        return item.name == this.shengl
-      })
-      let n = index[0].id
+        return item.name == this.shengl;
+      });
+      let n = index[0].id;
       // console.log(n)
-      this.shil=[]
-      axios.get(`https://api.it120.cc/common/region/child?pid=${n}`).then(res => {
-        // console.log(res.data.data)
-        this.shil = res.data.data;
-      // console.log(this.shil)
-      })
+      this.shil = [];
+      axios
+        .get(`https://api.it120.cc/common/region/child?pid=${n}`)
+        .then(res => {
+          // console.log(res.data.data)
+          this.shil = res.data.data;
+          // console.log(this.shil)
+        });
     }
   },
   created() {
@@ -262,7 +266,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 input {
   background: #f5f5f5;
@@ -384,5 +387,12 @@ button {
   -moz-animation-delay: 0.2s;
   -o-animation-delay: 0.2s;
   animation-delay: 0.2s;
+}
+.el-input .el-input--suffix{
+    width: 50% !important;
+    margin: 0;
+}
+.el-input__inner{
+  width: 70%;
 }
 </style>

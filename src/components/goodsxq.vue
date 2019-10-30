@@ -43,12 +43,36 @@
       <!--  -->
       <div v-show="Goodshow" v-html="this.GoodsName.content" class="content_goods"></div>
       <!--  -->
-      <div v-show="!Goodshow"></div>
+      <div v-show="!Goodshow">
+        <li
+          v-for="(item,i) in Pingj"
+          :key="i"
+          style="padding:0.2rem 0.5rem 0.2rem 0.2rem;box-sizing:border-box;font-size:0.26rem;width:100%;height:3rem;border-bottom:1px solid #ccc;display:flex;"
+        >
+          <div style="margin-top:0.5rem;">
+            <img
+              style="width:1.5rem;"
+              src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+              alt
+            />
+          </div>
+          <div style="display:flex;flex-direction: column;justify-content: space-between;">
+            <p>
+              匿名用户
+              <span
+                style="display:inline-block;padding:0.05rem 0.02rem;color:#fff;border-radius: 2px;background:red;"
+              >{{ item.goods.goodReputationStr }}</span>
+            </p>
+            <p>{{ item.goods.goodReputationRemark }}</p>
+            <p
+              style="color:#DBDBDB;"
+            >{{ item.goods.dateReputation }} 选择规格:{{ item.goods.goodsName }}</p>
+          </div>
+        </li>
+      </div>
     </div>
     <!--  -->
-    <div class="footerGoods">
-        立即发起砍价，最低可砍到1元
-    </div>
+    <div class="footerGoods">立即发起砍价，最低可砍到1元</div>
     <!--  -->
   </div>
 </template>
@@ -79,16 +103,25 @@ export default {
       GoodsName: {},
       titleGoods: "",
       characteristic: "",
-      Goodshow: true
+      Goodshow: true,
+      Pingj:[]
     };
   },
   created() {
     let { id } = this.$route.query;
     _product.detail(id).then(res => {
-      console.log(res.data.data);
+      // console.log(res.data.data);
       this.GoodsName = res.data.data;
       this.titleGoods = this.GoodsName.basicInfo.name;
       this.characteristic = this.GoodsName.basicInfo.characteristic;
+    });
+
+    _product.Pingjia(id).then(res => {
+      // console.log(res)
+      if (res.data.code == 0) {
+        this.Pingj = res.data.data;
+        //  console.log(this.Pingj)
+      }
     });
   }
 };
@@ -131,18 +164,17 @@ export default {
 .content_goods {
   font-size: 14px;
 }
-.footerGoods{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #B7282E;
-    height: 1rem;
-    font-size: 14px;
-    color: #fff;
-    box-sizing: border-box;
-    line-height: 1rem;
-    text-align: center;
-    display: block;
+.footerGoods {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #b7282e;
+  height: 1rem;
+  font-size: 14px;
+  color: #fff;
+  box-sizing: border-box;
+  line-height: 1rem;
+  text-align: center;
+  display: block;
 }
-
 </style>

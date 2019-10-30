@@ -2,9 +2,9 @@
   <div class="ztxq_box">
     <div class="ztxq_div_1">
       <span>
-        <router-link to="/home">
-          <i class="el-icon-arrow-left"></i>
-        </router-link>
+        <!-- <router-link to="/home"> -->
+          <i class="el-icon-arrow-left" @click="fhsyb"></i>
+        <!-- </router-link> -->
       </span>
       <span>专题详情</span>
       <span></span>
@@ -42,8 +42,13 @@ export default {
     // console.log(id)
     _product.Ztxq(id).then(res => {
       this.Ztxq = res.data.data;
-      console.log(this.Ztxq);
+      // console.log(this.Ztxq);
     });
+  },
+  methods: {
+    fhsyb(){
+      this.$router.go(-1)
+    }
   }
 };
 </script>

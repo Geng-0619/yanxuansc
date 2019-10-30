@@ -1,22 +1,24 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
-      <router-view class="child-view"></router-view>
-    </transition>
-    <!-- <router-view></router-view> -->
+    <keep-alive>
+      <transition :name="transitionName">
+        <router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
+      </transition>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" class="child-view"></router-view>
   </div>
 </template>
 
 <script>
 export default {
   name: "App",
- 
-  data(){
-    return{
+
+  data() {
+    return {
       transitionName: "slide-left"
-    }
+    };
   },
-   watch: {
+  watch: {
     $route(to, from) {
       if (to.path == "/") {
         this.transitionName = "slide-right";
@@ -34,6 +36,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.el-input__suffix{
+  right: 10px !important;
+}
+
 html,
 body,
 #app {
@@ -54,21 +60,23 @@ p {
 a {
   text-decoration: none;
 }
-.swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+.swiper-container-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
   bottom: 0.6rem !important;
 }
-.content_goods{
+.content_goods {
   padding: 0 0.2rem;
   box-sizing: border-box;
 }
- .content_goods img{
+.content_goods img {
   width: 100% !important;
   height: 100% !important;
 }
- .content_goods li{
-   clear: both;
-   /* text-indent: 0.2rem; */
-   padding: 0.3rem 0;
+.content_goods li {
+  clear: both;
+  /* text-indent: 0.2rem; */
+  padding: 0.3rem 0;
 }
 .child-view {
   position: absolute;

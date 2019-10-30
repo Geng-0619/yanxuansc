@@ -50,7 +50,7 @@ export default {
       this.Qmkj_kj = res.data.data.filter(item => {
         return item.kanjia == true;
       });
-        console.log(this.Qmkj_kj)
+        // console.log(this.Qmkj_kj)
     });
   },
   methods: {

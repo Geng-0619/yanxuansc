@@ -64,7 +64,7 @@ export default {
     _product.propZt().then(res => {
       let b = res.data.data;
       this.propZt = b.slice(0, 3);
-      console.log(this.propZt)
+      // console.log(this.propZt)
       // this.propZt = res.data.data;
     });
     _product.propTj().then(res => {

@@ -17,6 +17,7 @@ import Shangpinxq from '@/components/shangpinxq'
 import Sigin from '@/components/sigin'
 import SubGoods from '@/components/SubGoods'
 import Shouhuo from '@/components/shouhuo'
+import payHome from '@/components/payHome'
 Vue.use(Router)
 
 export default new Router({
@@ -29,68 +30,87 @@ export default new Router({
       children: [
         {
           path: '/home',
-          component: Home
+          component: Home,
+          mate: { keepAlive: true }
         },
         {
           path: '/home/fenlei',
-          component: fenlei
+          component: fenlei,
+          mate: { keepAlive: true }
         }, {
           path: '/cart',
-          component: cart
+          component: cart,
+          mate: { keepAlive: true }
         },
         {
           path: '/myhome',
-          component: myhome
+          component: myhome,
+          mate: { keepAlive: true }
         },
         {
           path: '/jingxuan',
-          component: Jingxuan
+          component: Jingxuan,
+          mate: { keepAlive: true }
         }
       ]
     },
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home',
+      mate: { keepAlive: true }
     },
     {
       path: '/qmkj',
-      component: Qmkj
+      component: Qmkj,
+      mate: { keepAlive: true }
     }, 
     {
       path: '/goodsxq/:id?',
-      component: Goodsxq
+      component: Goodsxq,
+      mate: { keepAlive: true }
     },
     {
       path: '/Ztxq/:id?',
-      component: Ztxq
+      component: Ztxq,
+      mate: { keepAlive: true }
     },
     {
       path: '/tjxq/:id?',
-      component: Tjxq
+      component: Tjxq,
+      mate: { keepAlive: true }
     },
     {
       path: '/login',
-      component: Login
+      component: Login,
+      mate: { keepAlive: true }
     },
     {
       path: '/reslogin',
-      component: Reslogin
+      component: Reslogin,
+      mate: { keepAlive: true }
     },
     {
       path: '/shangpinxq',
-      component: Shangpinxq
+      component: Shangpinxq,
+      mate: { keepAlive: true }
     },
     {
       path: '/sigin',
       component: Sigin
     },
     {
+      path: '/payHome',
+      component: payHome
+    },
+    {
       path: '/SubGoods',
-      component: SubGoods
+      component: SubGoods,
+      mate: { keepAlive: true }
     },
     {
       path: '/shouhuo',
-      component: Shouhuo
+      component: Shouhuo,
+      mate: { keepAlive: true }
     },
     
   ]

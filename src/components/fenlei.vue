@@ -7,7 +7,7 @@
       <div class="fl_cont_o">
         <span @click="ss">全部分类</span>
         <span v-for="(item,index) in Fenl" :key="index">
-          <ss @click="ssq(item,index)">{{item}}</ss>
+          <b @click="ssq(item,index)">{{item}}</b>
           <br />
         </span>
       </div>
@@ -70,7 +70,7 @@ export default {
   },
   created() {
     _product.fenlei().then(res => {
-      console.log(res.data.data);
+      // console.log(res.data.data);
       this.qb = res.data.data;
       res.data.data.map(item => {
         if (item.pid == 0) {
@@ -122,6 +122,8 @@ export default {
   padding-left: 0.5rem;
   border-radius: 15px;
   border: none;
+  height: 0.5rem;
+  font-size: 0.2rem;
   border: 1px solid #ddd;
 }
 .fl_cont_o {

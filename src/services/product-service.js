@@ -43,6 +43,16 @@ class Product {
             url: 'shop/goods/category/all'
         })
     }
+
+    Pingjia(productId){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/reputation',
+            data:{
+                goodsId: productId
+            }
+        })
+    }
    
     dxyz(phone){
         return _http.request({
@@ -50,6 +60,41 @@ class Product {
             url: 'verification/sms/get',
             data:{
                 phone: phone
+            }
+        })
+    }
+
+    Cjdd(n){
+        return _http.request({
+            type: 'post',
+            url: 'order/create',
+            data:{
+                token:n.token,
+                goodsJsonStr:n.goodsJsonStr,
+                // number:n.number,
+                // logisticsType:0
+            }
+        })
+    }
+
+    pinjiejiage(n){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/price',
+            data:{
+                goodsId:n.GoodsId,
+                propertyChildIds:n.ColId+','+n.SizeId
+            }
+        })
+    }
+
+    pinjiejiage1(n){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/price',
+            data:{
+                goodsId:n.GoodsId,
+                propertyChildIds:n.ColId+','+n.SizeId+','+n.ColId1+','+n.SizeId1
             }
         })
     }

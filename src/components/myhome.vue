@@ -107,17 +107,23 @@ export default {
     };
   },
   created() {
-    // console.log(JSON.parse(localStorage.getItem('token')))
-    axios
-      .post(`https://api.it120.cc/small4/user/detail?token=${this.userToken}`)
-      .then(res => {
-        console.log(res.data);
-        if (res.data.code == 0) {
-          this.tokenShow = true;
-          this.Username = res.data.data.base.mobile;
-          console.log(this.Username)
-        }
-      });
+    let tokenU = JSON.parse(localStorage.getItem("token"));
+    // console.log(tokenU)
+    if (tokenU == null) {
+      this.tokenShow = false;
+    } else {
+      axios
+        .post(`https://api.it120.cc/small4/user/detail?token=${tokenU}`)
+        .then(res => {
+          // console.log(res.data);
+          if (res.data.code == 0) {
+            this.tokenShow = true;
+            this.Username = res.data.data.base.mobile;
+            // console.log(this.Username);
+          }
+        });
+      // this.tokenShow = true;
+    }
   },
   computed: {
     userToken() {

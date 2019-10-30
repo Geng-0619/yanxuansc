@@ -3,10 +3,13 @@
     <!-- <div class="abou_cont"> -->
     <!-- <transition name="fade">
       
-    </transition> -->
-    
+    </transition>-->
+
     <!-- </div> -->
-    <router-view />
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive" />
+    </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive" />
     <Footv></Footv>
   </div>
 </template>
@@ -20,14 +23,10 @@ export default {
     Footv
   },
   data() {
-    return {
-      
-    };
-  },
- 
+    return {};
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-
 </style>

@@ -1,14 +1,18 @@
 <template>
   <div class="home_box">
     <div
-      style="width:100%;height:0.7rem;border-bottom:1px solid #ccc;position: fixed;top:0;background:#ffffff;"
+      style="width:100%;text-align:center;height:0.7rem;border-bottom:1px solid #ccc;position: fixed;top:0;background:#ffffff;"
     >
-      <span @click="ShowDel" v-show="!ShowDelGoods">编辑</span>
-      <span @click="ShowDel" v-show="ShowDelGoods">完成</span>
+      <span style="float:left;" @click="ShowDel" v-show="!ShowDelGoods&&CartItemV != 0">编辑</span>
+      <span style="float:left;" @click="ShowDel" v-show="ShowDelGoods&&CartItemV != 0">完成</span>
       <span>购物车</span>
       <span></span>
     </div>
-    <div class="GoodsCartItem">
+    <div v-show="CartItemV == 0" style="padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"> 
+        <i class="el-icon-shopping-cart-2" style="font-size:2rem;"></i>
+        <span>去添加点什么吧</span>
+    </div>
+    <div class="GoodsCartItem" v-show="CartItemV != 0">
       <div v-for="(item,index) in CartItemV" :key="index" style="display: flex;">
         <input type="checkbox" v-model="item.Goodscheck" @click="goodsCheck(index)" />
         <div>
@@ -32,33 +36,42 @@
         </div>
       </div>
     </div>
-    <div
-      style="height:0.7rem;width:100%;font-size:0.2rem;position: fixed;bottom:1rem;display:flex;justify-content: space-between;"
+    <div v-show="CartItemV != 0"
+      style="height:0.7rem;background:#ffffff;width:100%;font-size:0.2rem;position: fixed;bottom:1rem;display:flex;justify-content: space-between;"
     >
       <span style="line-height: 0.7rem;">
         <input type="checkbox" v-model="AllcheckGoods" @click="Allcheck" />全选
       </span>
       <div>
         <span>合计：￥{{ Allprice1 }}</span>
-        <router-link to="/SubGoods"><button class="GoodsXd" v-show="!ShowDelGoods">下单</button></router-link>
+        <router-link to="/SubGoods">
+          <button class="GoodsXd" v-show="!ShowDelGoods" @click="AddgoodsJsonStr">下单</button>
+        </router-link>
         <button class="GoodsXd" v-show="ShowDelGoods" @click="removeGoods">删除</button>
       </div>
     </div>
+    <cnxh></cnxh>
   </div>
 </template>
 
 <script>
+import cnxh from './cainixihuan'
 export default {
   name: "vartC",
+  components:{
+      cnxh 
+  },
   data() {
     return {
       // CartItemV: [],
       AllcheckGoods: false,
-      ShowDelGoods: false
+      ShowDelGoods: false,
+      AddgoodsJsonStr1:[],
+      CartItemV1:[]
     };
   },
-  created() {
-    // this.CartItemV = JSON.parse(localStorage.getItem("Cart"));
+  mounted() {
+    this.$store.state.CartItem = JSON.parse(localStorage.getItem("Cart"));
     // console.log(this.CartItemV);
     // if(this.CartItemV.length ==0){
     //   this.$store.state.CartItemV=JSON.parse(localStorage.getItem("Cart"))
@@ -66,7 +79,7 @@ export default {
   },
   computed: {
     CartItemV() {
-      return this.$store.state.CartItem;
+      return this.$store.state.CartItem
     },
     Allprice1() {
       return this.$store.state.Allprice;
@@ -133,6 +146,24 @@ export default {
     },
     jia(n) {
       this.$store.commit("jia", n);
+    },
+    AddgoodsJsonStr(){
+      // console.log(this.CartItemV)
+      let GoodscheckI = this.CartItemV.filter(item => {
+        return item.Goodscheck == true
+      })
+      GoodscheckI.map(item => {
+        // console.log(item)
+        this.AddgoodsJsonStr1.push({
+          goodsId : item.goodsId,
+          number : item.numGoods,
+          propertyChildIds : item.propertyChildIds
+          //  propertyChildids : "5351:17890,"
+        })
+      })
+        // console.log(JSON.stringify(this.AddgoodsJsonStr1))
+      console.log(this.AddgoodsJsonStr1)
+      localStorage.setItem('AddgoodsJsonS',JSON.stringify(this.AddgoodsJsonStr1))
     }
   }
 };
@@ -157,4 +188,7 @@ export default {
   box-sizing: border-box;
   border: none;
 }
+// .GoodsCartItem{
+//   padding:0;
+// }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <p style="text-align:center;padding:0.5rem 0;">猜你喜欢</p>
+    <p style="text-align:center;padding:0.5rem 0;">猜你喜欢</p>
     <div class="cnxh_zt">
       <div v-for="(item,index) in cnxh" :key="index" style="width:48%;">
         <img :src="item.pic" alt width="100%;" />
@@ -29,7 +29,7 @@ export default {
         return item.pingtuan == true;
       });
       this.cnxh = c.slice(0, 4);
-      console.log(this.cnxh);
+      // console.log(this.cnxh);
     });
   }
 };
@@ -39,7 +39,7 @@ export default {
 .cnxh_zt {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 0.2rem;
+  padding: 0 0.2rem 1.7rem 0;
   box-sizing: border-box;
   font-size: 14px;
 }

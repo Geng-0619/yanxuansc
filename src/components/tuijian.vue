@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div style="width:100%;height:11rem;padding-bottom:0.8rem;">
     <p class="home_comt_tuijian">
       人气推荐
       <i class="el-icon-arrow-right"></i>
     </p>
     <div class="prop_tuijian" v-for="(item,index) in propTj" :key="index">
-      <router-link :to="{path: '/tjxq',query:{id:item.id}}"><img :src="item.pic" alt /></router-link>
+      <router-link :to="{path: '/tjxq',query:{id:item.id}}">
+        <img :src="item.pic" alt />
+      </router-link>
       <span style="color:#D00000;font-size:0.28rem;">
         <b>￥{{item.minPrice}}</b>
       </span>
@@ -21,8 +23,8 @@
 
 <script>
 export default {
-    name:"tuijian",
-    props:['propTj']
+  name: "tuijian",
+  props: ["propTj"]
 };
 </script>
 

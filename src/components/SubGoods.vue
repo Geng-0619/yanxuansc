@@ -48,27 +48,36 @@
       </div>
       <p style="width:100%;height:0.3rem;background:#F5F5F5;margin:0;"></p>
 
-      <li style="padding:0 0.2rem;border-bottom:1px solid #ccc;margin-right:0.2rem;height:1rem;font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;">
+      <li
+        style="padding:0 0.2rem;border-bottom:1px solid #ccc;margin-right:0.2rem;height:1rem;font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;"
+      >
         <span>配送方式</span>
         <span>快递</span>
       </li>
 
-        <input type="text" placeholder="备注">
+      <li
+        style="padding:0 0.2rem;border-bottom:1px solid #ccc;margin-right:0.2rem;height:1rem;font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;"
+      >
+        备注
+        <input type="text" placeholder="如需备注请输入" style="width:70%;border:none;" />
+      </li>
 
-        <li style="font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;padding:0 0.2rem;">
-          <span>商品金额</span>
-          <span>
-            {{Zprice}}
-          </span>
-        </li>
-
+      <li
+        style="font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;padding:0 0.2rem;"
+      >
+        <span>商品金额</span>
+        <span>{{Zprice}}</span>
+      </li>
     </div>
     <div class="SubGoods_footer">
       <span style="float:right;">
         <span style="margin-right:0.2rem;">合计：￥{{Zprice}}</span>
-        <button style="height: 1rem;wdith:3rem;background:red;border:none;color:#ffffff;padding:0 0.6rem;">
-          提交订单
-        </button>
+        <router-link to="/payHome">
+          <button
+            @click="Chjdd"
+            style="height: 1rem;wdith:3rem;background:red;border:none;color:#ffffff;padding:0 0.6rem;"
+          >提交订单</button>
+        </router-link>
       </span>
     </div>
   </div>
@@ -85,8 +94,34 @@ export default {
       shoudz: false,
       ShowDiz: {},
       SubCartI: [],
-      Zprice:0
+      Zprice: 0
     };
+  },
+  methods: {
+    Chjdd() {
+      let token1 = JSON.parse(localStorage.getItem("token"));
+      let AddgoodsJsonS = JSON.parse(localStorage.getItem("AddgoodsJsonS"));
+      // console.log(AddgoodsJsonS)
+      let AddgoodsJsonSx = JSON.stringify(AddgoodsJsonS);
+      // console.log(AddgoodsJsonSx)
+      let obj1 = {
+        token: token1,
+        goodsJsonStr: AddgoodsJsonSx
+      };
+      _product.Cjdd(obj1).then(res => {
+        // console.log(res.data.data)
+        localStorage.setItem("dingdan", JSON.stringify(res.data.data));
+      });
+      //
+      // console.log(AddgoodsJsonSx);
+      // axios
+      //   .post(
+      //     `https://api.it120.cc/small4/order/create?token=${token1}&goodsJsonStr=${AddgoodsJsonSx}`
+      //   )
+      //   .then(res => {
+      //     console.log(res);
+      //   });
+    }
   },
   created() {
     let token = JSON.parse(localStorage.getItem("token"));
@@ -111,8 +146,8 @@ export default {
       return item.Goodscheck == true;
     });
     aa.map(item => {
-      this.Zprice += item.numGoods * item.priceGoods
-    })
+      this.Zprice += item.numGoods * item.priceGoods;
+    });
     // console.log(this.Zprice)
     // console.log(this.SubCartI)
   }
@@ -128,14 +163,13 @@ export default {
   // line-height: 1rem;
   box-sizing: border-box;
   padding: 0 0.3rem;
-  
 }
 .SubGoods_footer {
   width: 100%;
   height: 1rem;
   background: #ccc;
   box-sizing: border-box;
-  font-size:0.26rem;
+  font-size: 0.26rem;
 }
 .SubGoods_cont {
   flex: 1;

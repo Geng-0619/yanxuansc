@@ -5,9 +5,9 @@
       style="position: fixed;top: 0;width:100%;height:1rem;box-sizing:border-box;"
     >
       <span>
-        <router-link to="/home">
-          <i class="el-icon-arrow-left"></i>
-        </router-link>
+        <!-- <router-link to="/home"> -->
+          <i class="el-icon-arrow-left" @click="syj"></i>
+        <!-- </router-link> -->
       </span>
       <span>全民砍价</span>
       <span></span>
@@ -25,7 +25,7 @@
         <span
           style="margin-top:20px;font-size:16px;color:#fff;display:block;padding:0 0.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
         >{{item.descript}}</span>
-        <span class="jing_zj">查看详情</span>
+        <router-link :to="{ path: '/Ztxq', query:{id:item.id} }"><span class="jing_zj">查看详情</span></router-link>
         <br>
         <br>
       </p>
@@ -50,6 +50,11 @@ export default {
     _product.propZt().then(res => {
       this.jingxuan = res.data.data;
     });
+  },
+  methods: {
+    syj(){
+      this.$router.go(-1)
+    }
   }
 };
 </script>

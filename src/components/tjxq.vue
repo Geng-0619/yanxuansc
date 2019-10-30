@@ -29,9 +29,7 @@
       <p style="padding:0 0.2rem;">
         <span style="display:inline-block;font-size:0.28rem;color:red;">底价</span>
         <span style="color:red;">￥{{ this.ztxq.basicInfo.minPrice }}</span>
-        <span
-          style="display:inline-block;font-size:0.28rem;color:#B2B2B2;"
-        >原价{{ this.ztxq.basicInfo.originalPrice}}</span>
+        <span style="display:inline-block;font-size:0.28rem;color:#B2B2B2;">原价{{yuanjia}}</span>
         <span
           style="float:right;font-size:0.28rem;color:#B2B2B2;padding-top:0.1rem;"
         >库存{{ this.ztxq.basicInfo.stores}}</span>
@@ -45,7 +43,33 @@
       </div>
       <div v-show="Goodshow" v-html="this.ztxq.content" class="content_goods"></div>
       <!--  -->
-      <div v-show="!Goodshow"></div>
+      <div v-show="!Goodshow" style="margin-bottom:1rem;">
+        <li
+          v-for="(item,i) in Pingj"
+          :key="i"
+          style="padding:0.2rem 0.5rem 0.2rem 0.2rem;box-sizing:border-box;font-size:0.26rem;width:100%;height:3rem;border-bottom:1px solid #ccc;display:flex;"
+        >
+          <div style="margin-top:0.5rem;">
+            <img
+              style="width:1.5rem;"
+              src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+              alt
+            />
+          </div>
+          <div style="display:flex;flex-direction: column;justify-content: space-between;">
+            <p>
+              匿名用户
+              <span
+                style="display:inline-block;padding:0.05rem 0.02rem;color:#fff;border-radius: 2px;background:red;"
+              >{{ item.goods.goodReputationStr }}</span>
+            </p>
+            <p>{{ item.goods.goodReputationRemark }}</p>
+            <p
+              style="color:#DBDBDB;"
+            >{{ item.goods.dateReputation }} 选择规格:{{ item.goods.goodsName }}</p>
+          </div>
+        </li>
+      </div>
     </div>
     <!--  -->
     <div class="footerGoods">
@@ -73,16 +97,16 @@
           <img :src="ztxq.basicInfo.pic" class="cartTjxq_hIng" alt />
         </div>
         <div style="width:60%;">
-          <span style="float:left;">{{ ztxq.basicInfo.name }}</span>
+          <span style="float:left;">{{ this.ztxq.basicInfo.name }}</span>
           <br />
-          <span style="float:left;">{{ ztxq.basicInfo.minPrice }}</span>
+          <span ref="yuanj" style="float:left;">{{ this.ztxq.basicInfo.minPrice }}</span>
         </div>
         <div style="width:20%;">
           <span @click="QxcartTjxq">X</span>
         </div>
       </div>
       <div class="cartTjxq_c">
-        <p>{{ ztxq.properties[0].name }}</p>
+        <p>{{ this.ztxq.properties[0].name }}</p>
         <li
           v-for="(item,index) in ztxq.properties[0].childsCurGoods"
           :key="index"
@@ -91,7 +115,7 @@
         >{{ item.name }}</li>
 
         <div v-if="ztxq.properties.length >1">
-          <p>{{ ztxq.properties[1].name }}</p>
+          <p>{{ this.ztxq.properties[1].name }}</p>
           <li
             v-for="(v,i) in ztxq.properties[1].childsCurGoods"
             :key="i"
@@ -117,7 +141,9 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import Product from "../services/product-service.js";
 const _product = new Product();
 import axios from "axios";
+import { Dialog } from 'vant';
 export default {
+  name: "fenlei",
   data() {
     return {
       ztxq: {},
@@ -142,10 +168,14 @@ export default {
       GoodsId: "",
       SizeId: "",
       ColId: "",
+      SizeId1: "",
+      ColId1: "",
       nameGs: "",
       KeyIndex: -1,
       KeyIndex1: -1,
-      ColorGoods: ""
+      ColorGoods: "",
+      Pingj: [],
+      yuanjia: 0
     };
   },
   created() {
@@ -154,13 +184,16 @@ export default {
     this.GoodsId = id;
     // console.log(this.GoodsId)
     _product.detail(id).then(res => {
-      // console.log(res.data.data);
       this.ztxq = res.data.data;
-      // console.log(this.ztxq.properties.length)
-      // console.log(res.data.data);
-      // axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=`).then(res => {
-      //   console.log(res)
-      // })
+      this.yuanjia = this.ztxq.basicInfo.originalPrice;
+    });
+
+    _product.Pingjia(id).then(res => {
+      // console.log(res)
+      if (res.data.code == 0) {
+        this.Pingj = res.data.data;
+        //  console.log(this.Pingj)
+      }
     });
   },
   computed: {
@@ -186,56 +219,176 @@ export default {
       // axios.post(`https://api.it120.cc/small4/shop/goods/price?goodsId=${this.ztxq.basicInfo.id}&propertyChildIds=${n},${this.ztxq.properties[0].id}`).then(res => {
       //   console.log(res)
       // })
+      let arr = {
+        GoodsId: this.GoodsId,
+        ColId: this.ColId,
+        SizeId: this.SizeId
+      };
+      if (this.ztxq.properties.length == 1) {
+        _product.pinjiejiage(arr).then(res => {
+          // console.log(res)
+          // console.log(res.data.data.price)
+          // this.yuanjia = res.data.data.price
+          // console.log(this.$refs.yuanj.innerHTML)
+          if (res.data.code == 0) {
+            this.$refs.yuanj.innerHTML = res.data.data.price;
+          }
+        });
+      }
     },
     colorZx(v, i) {
       this.KeyIndex1 = i;
       this.ColorGoods = v.name;
+      this.ColId1 = this.ztxq.properties[1].id;
+      this.SizeId1 = v.id;
+      // console.log(v)
+      let arr1 = {
+        GoodsId: this.GoodsId,
+        ColId: this.ColId,
+        SizeId: this.SizeId,
+        ColId1: v.propertyId,
+        SizeId1: v.id
+      };
+      _product.pinjiejiage1(arr1).then(res => {
+        // console.log(res);
+        // this.$refs.yuanj.innerHTML = res.data.data.price
+      });
     },
     AddCartI() {
-      axios
-        .post(
-          `https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.SizeId},${this.ColId}`
-        )
-        .then(res => {
-          // console.log(res.data.data)
-          // this.$store.state.PriceGoods = res.data.data.price
-          let arr = JSON.parse(localStorage.getItem("Cart"));
-          if (arr == null) {
-            let box = [];
-            localStorage.setItem("Cart", JSON.stringify(box));
-          } else {
-            this.$store.state.CartItem = JSON.parse(
-              localStorage.getItem("Cart")
-            );
+      let arr = JSON.parse(localStorage.getItem("Cart"));
+      if (arr == null) {
+        let box = [];
+        localStorage.setItem("Cart", JSON.stringify(box));
+      } else {
+        this.$store.state.CartItem = JSON.parse(localStorage.getItem("Cart"));
+      }
+
+      if (this.ztxq.properties.length == 1) {
+        let arr = {
+          GoodsId: this.GoodsId,
+          ColId: this.ColId,
+          SizeId: this.SizeId
+        };
+        _product.pinjiejiage(arr).then(res => {
+          // console.log(res)
+          if (res.data.code == 0) {
+            this.$refs.yuanj.innerHTML = res.data.data.price;
           }
-          if (this.ztxq.properties.length > 1) {
-            let obj = {
-              images: this.ztxq.basicInfo.pic,
-              nameGoods: this.ztxq.properties[0].name + this.nameGs + this.ColorGoods,
-              titleGoods: this.ztxq.basicInfo.name,
-              priceGoods: res.data.data.price,
-              numGoods: this.num,
-              Goodscheck: false,
-              goodsId:res.data.data.goodsId,
-              propertyChildIds:res.data.data.propertyChildIds
-            };
-            this.$store.commit("AddCartI", obj);
-            this.Tjcart = false;
-          } else {
-            let obj = {
-              images: this.ztxq.basicInfo.pic,
-              nameGoods: this.ztxq.properties[0].name + this.nameGs,
-              titleGoods: this.ztxq.basicInfo.name,
-              priceGoods: res.data.data.price,
-              numGoods: this.num,
-              Goodscheck: false,
-              goodsId:res.data.data.goodsId,
-              propertyChildIds:res.data.data.propertyChildIds
-            };
-            this.$store.commit("AddCartI", obj);
-            this.Tjcart = false;
+          if (res.data.code == 405) {
+            Dialog.alert({
+              title: "提示",
+              message: "请选择商品规格"
+            }).then(() => {
+              // on close
+            });
+            // alert("请选择尺寸");
+            return false;
           }
+          let pric = res.data.data;
+          let obj = {
+            images: this.ztxq.basicInfo.pic,
+            nameGoods: this.ztxq.properties[0].name + this.nameGs,
+            titleGoods: this.ztxq.basicInfo.name,
+            priceGoods: pric.price,
+            numGoods: this.num,
+            Goodscheck: false,
+            goodsId: pric.goodsId,
+            propertyChildIds: pric.propertyChildIds
+          };
+          this.$store.commit("AddCartI", obj);
+          this.Tjcart = false;
         });
+      } else {
+        let arr1 = {
+          GoodsId: this.GoodsId,
+          ColId: this.ColId,
+          SizeId: this.SizeId,
+          ColId1: this.ColId1,
+          SizeId1: this.SizeId1
+        };
+        _product.pinjiejiage1(arr1).then(res => {
+          // console.log(res);
+          if (res.data.code != 0) {
+            Dialog.alert({
+              title: "提示",
+              message: "请选择商品规格"
+            }).then(() => {
+              // on close
+            });
+            return false;
+          }
+          let pric = res.data.data;
+          let obj = {
+            images: this.ztxq.basicInfo.pic,
+            nameGoods: this.ztxq.properties[0].name + this.nameGs,
+            titleGoods: this.ztxq.basicInfo.name,
+            priceGoods: pric.price,
+            numGoods: this.num,
+            Goodscheck: false,
+            goodsId: pric.goodsId,
+            propertyChildIds: pric.propertyChildIds
+          };
+          this.$store.commit("AddCartI", obj);
+          this.Tjcart = false;
+        });
+      }
+
+      //     axios
+      //       .post(
+      //         `https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.ColId},${this.SizeId}`
+      //       )
+      //       .then(res => {
+      //         // console.log(res);
+      //         if (res.data.code == 405) {
+      //           alert("请选择尺寸");
+      //           return false;
+      //         }
+      //         let pric = res.data.data;
+      //         // console.log(res.data.data);
+      //         // this.$store.state.PriceGoods = res.data.data.price
+      //         let arr = JSON.parse(localStorage.getItem("Cart"));
+      //         if (arr == null) {
+      //           let box = [];
+      //           localStorage.setItem("Cart", JSON.stringify(box));
+      //         } else {
+      //           this.$store.state.CartItem = JSON.parse(
+      //             localStorage.getItem("Cart")
+      //           );
+      //         }
+      //         if (this.ztxq.properties.length > 1) {
+      //           let obj = {
+      //             images: this.ztxq.basicInfo.pic,
+      //             nameGoods:
+      //               this.ztxq.properties[0].name + this.nameGs + this.ColorGoods,
+      //             titleGoods: this.ztxq.basicInfo.name,
+      //             priceGoods: pric.price,
+      //             numGoods: this.num,
+      //             Goodscheck: false,
+      //             goodsId: pric.goodsId,
+      //             propertyChildIds: pric.propertyChildIds
+      //           };
+      //           if (this.ColorGoods == "") {
+      //             alert("请选择颜色");
+      //             return false;
+      //           } else {
+      //             this.$store.commit("AddCartI", obj);
+      //             this.Tjcart = false;
+      //           }
+      //         } else {
+      //           let obj = {
+      //             images: this.ztxq.basicInfo.pic,
+      //             nameGoods: this.ztxq.properties[0].name + this.nameGs,
+      //             titleGoods: this.ztxq.basicInfo.name,
+      //             priceGoods: pric.price,
+      //             numGoods: this.num,
+      //             Goodscheck: false,
+      //             goodsId: pric.goodsId,
+      //             propertyChildIds: pric.propertyChildIds
+      //           };
+      //           this.$store.commit("AddCartI", obj);
+      //           this.Tjcart = false;
+      //         }
+      //       });
     }
   }
 };
