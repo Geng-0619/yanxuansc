@@ -63,6 +63,7 @@
   }
   .cartTjxq_hIng{
       width: 1rem !important;
+      padding: 25% 0 0 6%;
   }
   .cartTjxq_h{
       height: 2rem;
@@ -71,7 +72,9 @@
       margin: 0 0 0 0.2rem;
       box-sizing: border-box;
     //   justify-content: space-between;
-      align-items: center;
+      // align-items: center;
+      
+      
   }
   .cartTjxq_c{
       flex: 1;
@@ -95,4 +98,14 @@
       font-size: 0.28rem;
       line-height: 0.8rem;
       box-sizing: border-box;
+  }
+  .removeTj{
+    float: right;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 0.4rem;
+    color: #ccc;;
   }

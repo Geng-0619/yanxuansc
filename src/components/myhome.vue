@@ -19,7 +19,7 @@
     <p class="myh_lb">🔈新上线更稳定的付费快递查询接口</p>
     <p style="width:100%;height:0.2rem;background:#f5f5f5;margin:0;"></p>
     <p class="myh_di">
-      <span>
+      <span class="fontM">
         <i class="el-icon-tickets" style="font-size: 0.4rem;"></i>我的订单
       </span>
       <span>
@@ -31,73 +31,76 @@
         <span>
           <i class="el-icon-s-finance" style="font-size: 0.6rem;"></i>
         </span>
-        <span>待付款</span>
+        <span class="fontM">待付款</span>
       </div>
       <div>
         <span>
           <i class="el-icon-takeaway-box" style="font-size: 0.6rem;"></i>
         </span>
-        <span>待发货</span>
+        <span class="fontM">待发货</span>
       </div>
       <div>
         <span>
           <i class="el-icon-truck" style="font-size: 0.6rem;"></i>
         </span>
-        <span>待收货</span>
+        <span class="fontM">待收货</span>
       </div>
       <div>
         <span>
           <i class="el-icon-chat-line-square" style="font-size: 0.6rem;"></i>
         </span>
-        <span>待评价</span>
+        <span class="fontM">待评价</span>
       </div>
     </div>
     <p style="width:100%;height:0.2rem;background:#f5f5f5;margin:0;"></p>
     <div class="myh_fl">
       <div>
         <span>
-          <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
+          <i class="el-icon-s-ticket" style="font-size: 0.6rem;"></i>
+          <!-- <van-icon name="gold-coin-o" style="font-size: 0.6rem;" /> -->
         </span>
-        <span>我的</span>
+        <span class="Mh_n">我的余额</span>
         <span>0</span>
       </div>
       <div>
         <span>
-          <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
+          <i class="el-icon-s-ticket" style="font-size: 0.6rem;"></i>
         </span>
-        <span>我的</span>
+        <span class="Mh_n">我的砍价</span>
+      </div>
+      <div>
+        <span style="font-size: 0.6rem;">
+          <i class="el-icon-s-ticket" ></i>
+        </span>
+        <span class="Mh_n">我的礼卷</span>
       </div>
       <div>
         <span>
           <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
         </span>
-        <span>我的</span>
+        <span class="Mh_n">我的收藏</span>
       </div>
       <div>
         <span>
-          <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
+          <i class="el-icon-map-location" style="font-size: 0.6rem;"></i>
         </span>
-        <span>我的</span>
+        <span class="Mh_n">我的地址</span>
       </div>
       <div>
         <span>
-          <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
+          <i class="el-icon-service" style="font-size: 0.6rem;"></i>
         </span>
-        <span>我的</span>
-      </div>
-      <div>
-        <span>
-          <i class="el-icon-star-off" style="font-size: 0.6rem;"></i>
-        </span>
-        <span>我的</span>
+        <span class="Mh_n">联系客服</span>
       </div>
     </div>
+     <p style="width:100%;height:1.2rem;background:#f5f5f5;margin:0;"></p>
   </div>
 </template>
 
 <script>
 import "../css/myhome.scss";
-import axios from "axios";
+import Product from "../services/product-service.js";
+const _product = new Product();
 export default {
   naem: "myhome",
   data() {
@@ -112,17 +115,13 @@ export default {
     if (tokenU == null) {
       this.tokenShow = false;
     } else {
-      axios
-        .post(`https://api.it120.cc/small4/user/detail?token=${tokenU}`)
-        .then(res => {
-          // console.log(res.data);
-          if (res.data.code == 0) {
-            this.tokenShow = true;
-            this.Username = res.data.data.base.mobile;
-            // console.log(this.Username);
-          }
-        });
-      // this.tokenShow = true;
+      _product.Myhome(tokenU).then(res => {
+        if (res.data.code == 0) {
+          this.tokenShow = true;
+          this.Username = res.data.data.base.mobile;
+          // console.log(this.Username);
+        }
+      });
     }
   },
   computed: {

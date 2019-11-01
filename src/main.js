@@ -9,7 +9,9 @@ import './rem'
 import ElementUI from 'element-ui';
 import Vant from 'vant';
 import { AddressEdit } from 'vant';
+import { Icon } from 'vant';
 import { Dialog } from 'vant';
+
 import 'vant/lib/index.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -18,6 +20,7 @@ Vue.use(ElementUI);
 Vue.use(Vant);
 Vue.use(AddressEdit);
 Vue.use(Dialog);
+Vue.use(Icon);
 import '../node_modules/swiper/css/swiper.min.css'
 /* eslint-disable no-new */
 

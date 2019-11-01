@@ -1,11 +1,5 @@
 <template>
   <div class="abou_box">
-    <!-- <div class="abou_cont"> -->
-    <!-- <transition name="fade">
-      
-    </transition>-->
-
-    <!-- </div> -->
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>

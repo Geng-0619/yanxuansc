@@ -18,6 +18,8 @@ import Sigin from '@/components/sigin'
 import SubGoods from '@/components/SubGoods'
 import Shouhuo from '@/components/shouhuo'
 import payHome from '@/components/payHome'
+import myaddress from '@/components/myaddress'
+import Kanjiaxq from '@/components/Kanjiaxq'
 Vue.use(Router)
 
 export default new Router({
@@ -95,6 +97,11 @@ export default new Router({
       mate: { keepAlive: true }
     },
     {
+      path: '/myaddress',
+      component: myaddress,
+      mate: { keepAlive: true }
+    },
+    {
       path: '/sigin',
       component: Sigin
     },
@@ -112,6 +119,9 @@ export default new Router({
       component: Shouhuo,
       mate: { keepAlive: true }
     },
-    
+    {
+      path: '/Kanjiaxq',
+      component: Kanjiaxq,
+    }
   ]
 })

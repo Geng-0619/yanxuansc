@@ -4,14 +4,12 @@
       class="qmkj_kk"
       style="position: fixed;top: 0;width:100%;height:1rem;box-sizing:border-box;"
     >
-      <span>
-        <!-- <router-link to="/home"> -->
+      <span style="float:left;font-size:0.35rem;">
           <i class="el-icon-arrow-left" @click="syj"></i>
-        <!-- </router-link> -->
       </span>
-      <span>全民砍价</span>
-      <span></span>
+      <span>严选专题</span>
     </div>
+    <div style="height:0.5rem;"></div>
     <div class="home_zt">
       <p
         v-for="(item,index) in jingxuan"
@@ -30,9 +28,7 @@
         <br>
       </p>
     </div>
-    <br />
-    <br />
-    <br />
+   <div style="height:1.5rem;"></div>
   </div>
 </template>
 
@@ -61,11 +57,13 @@ export default {
 
 <style lang="scss" scoped>
 .qmkj_kk{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
     background: #fff;
-     border-radius: 0%;
+    border-radius: 0%;
+    text-align: center;
+    line-height: 1rem;
+    padding: 0 0.2rem;
+    border: none;
+    font-size: 0.26rem;
 }
 .jing_zj{
   margin-top:15px;

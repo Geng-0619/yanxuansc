@@ -24,37 +24,37 @@
 </template>
 
 <script>
-import axios from "axios";
+import Product from "../services/product-service.js";
+const _product = new Product();
 export default {
   name: "login",
   data() {
     return {
       phone_d: "", // 手机号
-      phone_l: "",  // 密码
+      phone_l: "", // 密码
       loginShow: false,
       loginShow1: false
     };
   },
   methods: {
     login_dl() {
-      // https://api.it120.cc/small4/user/m/login?deviceId=007&deviceName=monkey
-      axios
-        .post(
-          `https://api.it120.cc/small4/user/m/login?mobile=${this.phone_d}&pwd=${this.phone_l}&deviceId=007&deviceName=monkey`
-        )
-        .then(res => {
-          console.log(res)
-          if (res.data.code == 0) {
-            // token
-            // uid
-            console.log(res.data.data); 
-            this.$store.state.itemToken = res.data.data.token
-            localStorage.setItem('token',JSON.stringify(res.data.data.token))
-            this.$router.push({
-              path: "/myhome"
-            });
-          }
-        });
+      let obj = {
+        mobile: this.phone_d,
+        pwd: this.phone_l,
+        deviceId: "007",
+        deviceName: "monkey"
+      };
+      _product.Login(obj).then(res => {
+        console.log(res);
+        if (res.data.code == 0) {
+          console.log(res.data.data);
+          this.$store.state.itemToken = res.data.data.token;
+          localStorage.setItem("token", JSON.stringify(res.data.data.token));
+          this.$router.push({
+            path: "/myhome"
+          });
+        }
+      });
     },
     pd_phone() {
       // 手机号验证

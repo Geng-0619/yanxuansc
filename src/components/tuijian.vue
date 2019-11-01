@@ -2,7 +2,7 @@
   <div style="width:100%;height:11rem;padding-bottom:0.8rem;">
     <p class="home_comt_tuijian">
       人气推荐
-      <i class="el-icon-arrow-right"></i>
+      <span class="crit"><i class="el-icon-arrow-right"></i></span>
     </p>
     <div class="prop_tuijian" v-for="(item,index) in propTj" :key="index">
       <router-link :to="{path: '/tjxq',query:{id:item.id}}">

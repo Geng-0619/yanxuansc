@@ -3,9 +3,9 @@
     <div>
       <div class="qmkj_kk" style="position: fixed;top: 0;height:1rem;box-sizing:border-box;">
         <span class="xq_goods">
-          <router-link to="/home">
-            <i class="el-icon-arrow-left"></i>
-          </router-link>
+          <!-- <router-link to="/home"> -->
+            <i class="el-icon-arrow-left" @click="syj"></i>
+          <!-- </router-link> -->
         </span>
       </div>
       <!--  -->
@@ -42,7 +42,7 @@
         <div :class="{red:!Goodshow}" @click="Goodshow=false">商品评价</div>
       </div>
       <div v-show="Goodshow" v-html="this.ztxq.content" class="content_goods"></div>
-      <!--  -->
+      <!-- 评价 -->
       <div v-show="!Goodshow" style="margin-bottom:1rem;">
         <li
           v-for="(item,i) in Pingj"
@@ -71,14 +71,15 @@
         </li>
       </div>
     </div>
-    <!--  -->
+    <!-- 商品详情 -->
     <div class="footerGoods">
       <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
         <i class="el-icon-service"></i>
       </div>
       <router-link to="/cart">
         <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
-          <i class="el-icon-shopping-cart-full">{{ NumStore }}</i>
+          <i class="el-icon-shopping-cart-full"></i>
+          <span>{{ NumStore }}</span>
         </div>
       </router-link>
       <div style="width:1.08rem;height:100%;font-size:24px; border: 0.01rem solid gray;">
@@ -96,13 +97,12 @@
         <div style="width:20%;">
           <img :src="ztxq.basicInfo.pic" class="cartTjxq_hIng" alt />
         </div>
-        <div style="width:60%;">
-          <span style="float:left;">{{ this.ztxq.basicInfo.name }}</span>
-          <br />
-          <span ref="yuanj" style="float:left;">{{ this.ztxq.basicInfo.minPrice }}</span>
+        <div style="width:60%;display: flex;justify-content: space-around;flex-direction: column;">
+          <span >{{ this.ztxq.basicInfo.name }}</span>
+          <span ref="yuanj" style="color:red;">￥{{ this.ztxq.basicInfo.minPrice }}</span>
         </div>
-        <div style="width:20%;">
-          <span @click="QxcartTjxq">X</span>
+        <div style="width:20%;box-sizing: border-box;padding:0.2rem 0.3rem;">
+          <span @click="QxcartTjxq" class="removeTj">X</span>
         </div>
       </div>
       <div class="cartTjxq_c">
@@ -254,6 +254,9 @@ export default {
         // this.$refs.yuanj.innerHTML = res.data.data.price
       });
     },
+    syj(){
+      this.$router.go(-1)
+    },
     AddCartI() {
       let arr = JSON.parse(localStorage.getItem("Cart"));
       if (arr == null) {
@@ -332,63 +335,6 @@ export default {
           this.Tjcart = false;
         });
       }
-
-      //     axios
-      //       .post(
-      //         `https://api.it120.cc/small4/shop/goods/price?goodsId=${this.GoodsId}&propertyChildIds=${this.ColId},${this.SizeId}`
-      //       )
-      //       .then(res => {
-      //         // console.log(res);
-      //         if (res.data.code == 405) {
-      //           alert("请选择尺寸");
-      //           return false;
-      //         }
-      //         let pric = res.data.data;
-      //         // console.log(res.data.data);
-      //         // this.$store.state.PriceGoods = res.data.data.price
-      //         let arr = JSON.parse(localStorage.getItem("Cart"));
-      //         if (arr == null) {
-      //           let box = [];
-      //           localStorage.setItem("Cart", JSON.stringify(box));
-      //         } else {
-      //           this.$store.state.CartItem = JSON.parse(
-      //             localStorage.getItem("Cart")
-      //           );
-      //         }
-      //         if (this.ztxq.properties.length > 1) {
-      //           let obj = {
-      //             images: this.ztxq.basicInfo.pic,
-      //             nameGoods:
-      //               this.ztxq.properties[0].name + this.nameGs + this.ColorGoods,
-      //             titleGoods: this.ztxq.basicInfo.name,
-      //             priceGoods: pric.price,
-      //             numGoods: this.num,
-      //             Goodscheck: false,
-      //             goodsId: pric.goodsId,
-      //             propertyChildIds: pric.propertyChildIds
-      //           };
-      //           if (this.ColorGoods == "") {
-      //             alert("请选择颜色");
-      //             return false;
-      //           } else {
-      //             this.$store.commit("AddCartI", obj);
-      //             this.Tjcart = false;
-      //           }
-      //         } else {
-      //           let obj = {
-      //             images: this.ztxq.basicInfo.pic,
-      //             nameGoods: this.ztxq.properties[0].name + this.nameGs,
-      //             titleGoods: this.ztxq.basicInfo.name,
-      //             priceGoods: pric.price,
-      //             numGoods: this.num,
-      //             Goodscheck: false,
-      //             goodsId: pric.goodsId,
-      //             propertyChildIds: pric.propertyChildIds
-      //           };
-      //           this.$store.commit("AddCartI", obj);
-      //           this.Tjcart = false;
-      //         }
-      //       });
     }
   }
 };

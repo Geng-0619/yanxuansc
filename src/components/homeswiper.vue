@@ -32,7 +32,7 @@
         </router-link>
       </ul>
     </div>
-    <p style="width:100%;height:0.4rem;background:#ccc;margin:0;"></p>
+    <p style="width:100%;height:0.4rem;background:#f5f5f5;margin:0;"></p>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
 .content-one {
   height: 2rem;
   border-radius: 20% 20% 0 0;
-  border: 1px solid #ddd;
+  // border: 1px solid #ddd;
   background: white;
   // position: absolute;
   position: relative;

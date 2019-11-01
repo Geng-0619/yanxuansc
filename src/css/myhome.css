@@ -69,3 +69,13 @@
   align-items: center;
   padding-top: 0.2rem;
 }
+
+.fontM {
+  font-size: 0.26rem;
+  color: #6D6D6D;
+}
+
+.Mh_n {
+  display: inline-block;
+  margin-top: 0.1rem;
+}

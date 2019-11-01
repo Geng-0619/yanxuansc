@@ -108,37 +108,80 @@ class Product {
             }
         })
     }
+    
+    Dizlb(token){
+        return _http.request({
+            type: 'post',
+            url: 'user/shipping-address/list',
+            data:{
+                token: token
+            }
+        })
+    }
 
-    // shangpinxq(productId){
-    //     return _http.request({
-    //         type: 'post',
-    //         url: 'shop/goods/detail',
-    //         data:{
-    //             id: productId
-    //         }
-    //     })
-    // }
+    Paydz(token){
+        return _http.request({
+            type: 'post',
+            url: 'user/shipping-address/default',
+            data:{
+                token: token
+            }
+        })
+    }
 
-    // tuxingyanz(){
-    //     return _http.request({
-    //         type: 'post',
-    //         url: 'verification/pic/get',
-    //         // data:{
-    //         //     phone: phone
-    //         // }
-    //     })
-    // }
+    Myhome(token){
+        return _http.request({
+            type: 'post',
+            url: 'user/detail',
+            data:{
+                token: token
+            }
+        })
+    }
 
-    // relogin(phone,pass,user){
-    //     return _http.request({
-    //         type: 'post',
-    //         url: 'user/m/register',
-    //         data:{
-    //             phone:phone,
-    //             pass:pass,
-    //             user:user,
-    //         }
-    //     })
-    // }
+    
+    Fkj(n){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/kanjia/join',
+            data:{
+                kjid:n.kjid,
+                token:n.token
+            }
+        })
+    }
+
+    Kjxq(n){
+        return _http.request({
+            type: 'post',
+            url: 'shop/goods/kanjia/help',
+            data:{
+                token:n.token,
+                kjid:n.kjid,
+                joinerUser:n.joinerUser
+            }
+        })
+    }
+
+    Login(n){
+        return _http.request({
+            type: 'post',
+            url: 'user/m/login',
+            data:{
+                deviceId:n.deviceId,
+                deviceName:n.deviceName,
+                mobile:n.mobile,
+                pwd:n.pwd
+            }
+        })
+    }
+
+    kjid(){
+        return _http.request({
+            // type: 'post',
+            url: 'shop/goods/kanjia/list'
+        })
+    }
+
 }
 export default Product

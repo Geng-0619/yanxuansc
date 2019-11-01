@@ -19,7 +19,7 @@
         </router-link>
       </div>
       <div v-show="!shoudz">
-        <router-link to="/">
+        <router-link to="/myaddress">
           <div class="SubGoods_shdz" style="font-size:0.2rem;height:1rem;">
             <div style="display:flex;flex-direction: column;">
               <span>{{ShowDiz.linkMan}}{{ShowDiz.mobile}}</span>
@@ -66,7 +66,7 @@
         style="font-size:0.26rem;display:flex;justify-content: space-between;box-sizing: border-box;align-items: center;padding:0 0.2rem;"
       >
         <span>商品金额</span>
-        <span>{{Zprice}}</span>
+        <span>{{ Zprice }}</span>
       </li>
     </div>
     <div class="SubGoods_footer">
@@ -125,11 +125,11 @@ export default {
   },
   created() {
     let token = JSON.parse(localStorage.getItem("token"));
-    if (token == null) {
-      this.shoudz = true;
-    } else {
-      this.shoudz = false;
-    }
+    // if (token == null) {
+    //   this.shoudz = true;
+    // } else {
+    //   this.shoudz = false;
+    // }
     axios
       .post(
         `https://api.it120.cc/small4/user/shipping-address/default?token=${token}`
@@ -148,6 +148,7 @@ export default {
     aa.map(item => {
       this.Zprice += item.numGoods * item.priceGoods;
     });
+    localStorage.setItem('Zprice',JSON.stringify(this.Zprice))
     // console.log(this.Zprice)
     // console.log(this.SubCartI)
   }

@@ -1,7 +1,9 @@
 <template>
   <div class="home_box box_home">
     <div class="home_header" v-show="this.abab">
-      <div></div>
+      <div>
+        <img src="../assets/timg.jpg" alt="">
+      </div>
     </div>
     <div class="home_content">
       <!-- 轮播图 -->
@@ -12,12 +14,12 @@
       <!-- 砍价 -->
       <kanjia :kanjia="kanjia"></kanjia>
       <!-- ======================================================================================= -->
-      <p style="width:100%;height:0.4rem;background:#ccc;margin-top:0.2rem;"></p>
+      <p style="width:100%;height:0.4rem;background:#f5f5f5;margin-top:0.2rem;"></p>
       <!-- ======================================================================================= -->
       <!-- 专题 -->
       <zhuanti :propZt="propZt"></zhuanti>
       <!-- ======================================================================================= -->
-      <p style="width:100%;height:0.4rem;background:#ccc;margin-top:0.2rem;"></p>
+      <p style="width:100%;height:0.4rem;background:#f5f5f5;margin-top:0.2rem;"></p>
       <!-- ======================================================================================= -->
       <!-- 推荐 -->
       <tuijian :propTj="propTj"></tuijian>
@@ -30,7 +32,6 @@
 
 <script>
 import "../css/home.scss";
-import axios from "axios";
 import swiperhome from "./homeswiper";
 import kanjia from "./kanjia";
 import tuijian from "./tuijian";
@@ -65,7 +66,6 @@ export default {
       let b = res.data.data;
       this.propZt = b.slice(0, 3);
       // console.log(this.propZt)
-      // this.propZt = res.data.data;
     });
     _product.propTj().then(res => {
       // console.log(res.data.data)
@@ -76,12 +76,7 @@ export default {
           item.stores == 100
         );
       });
-      //  this.kanjia1 = res.data.data.filter(item => {
-      //   return (
-      //     item.pingtuan == true
-      //   );
-      // });
-      // console.log(this.kanjia1)
+      // console.log(this.kanjia)
       let a = res.data.data.filter(item => {
         return item.recommendStatusStr == "推荐";
       });
@@ -112,8 +107,8 @@ export default {
   z-index: 999;
   width: 100%;
   height: 1rem;
-  border: 1px solid #ccc;
-  background: #ccc;
+  border: 1px solid #fff;
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,15 +116,10 @@ export default {
   div {
     width: 0.4rem;
     height: 0.4rem;
-    background: purple;
+    img{
+      width: 100%;
+    }
   }
-}
-.box_home {
-  // display: flex;
-  // flex-direction: column;
-  // width: 100%;
-  // height: 100%;
-  // font-size: 0.4rem;
 }
 .home_content {
   flex: 1;

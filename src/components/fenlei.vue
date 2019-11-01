@@ -5,8 +5,8 @@
     </div>
     <div class="fl_cont">
       <div class="fl_cont_o">
-        <span @click="ss">全部分类</span>
-        <span v-for="(item,index) in Fenl" :key="index">
+        <span @click="ss" :class="{reda:FlAll}">全部分类</span>
+        <span v-for="(item,index) in Fenl" :key="index" :class="{reda:Flindex==index&&!FlAll}">
           <b @click="ssq(item,index)">{{item}}</b>
           <br />
         </span>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import "../css/fenlei.scss";
 import Product from "../services/product-service.js";
 const _product = new Product();
 export default {
@@ -44,11 +45,15 @@ export default {
       ms: "",
       qb: [],
       arr1: [],
-      flge: true
+      flge: true,
+      Flindex:-1,
+      FlAll:false
     };
   },
   methods: {
     ssq(n, i) {
+      this.Flindex = i;
+      this.FlAll = false;
       this.flge = false;
       //   this.ms = n;
       let index = this.qb.findIndex(item => {
@@ -61,6 +66,7 @@ export default {
       // console.log(this.arr1);
     },
     ss(el) {
+      this.FlAll = true;
       this.ms = el.target.innerHTML;
       // console.log(el.target.innerHTML)
       if ((this.ms = el.target.innerHTML)) {
@@ -88,62 +94,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fl_cont_r {
-  display: inline-block;
-  width: 33%;
-  text-align: center;
-  font-size: 0.28rem;
-  box-sizing: border-box;
-  padding: 0.2rem;
-  //   margin-bottom: 0.8rem;
-  img {
-    width: 100%;
-  }
-}
-.fl_top {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 1rem;
-  background: #fff;
-  border-bottom: 1px solid #ccc;
-  box-sizing: border-box;
-  line-height: 1rem;
-}
-.fl_cont {
-  // display: flex;
-  //   flex: 1;
-  width: 100%;
-  min-height: 101%;
-  margin-top: 1rem;
-}
-.fl_inp {
-  outline: none;
-  padding-left: 0.5rem;
-  border-radius: 15px;
-  border: none;
-  height: 0.5rem;
-  font-size: 0.2rem;
-  border: 1px solid #ddd;
-}
-.fl_cont_o {
-  height: 100%;
-  position: fixed;
-  left: 0;
-  border-right: 1px solid #ccc;
-  span {
-    font-size: 0.3rem;
-    display: block;
-    padding: 0.2rem 0.2rem;
-    text-align: left;
-  }
-}
-.fl_cont_t {
-  float: right;
-  width: 75%;
-  padding: 0 0 1rem 0;
-}
-.home_box {
-  height: 100%;
-}
 </style>

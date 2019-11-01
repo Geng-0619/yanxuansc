@@ -25,25 +25,8 @@
     <p style="clear: both;"></p>
     <br />
     <div>
-      <!-- <button class="type1" style="margin:0 20px 0px 35px;" @click="showVuePopup(true)">vue transition</button> -->
       <div class="vue-popup">
         <div class="mask" v-show="show2" @click="showVuePopup(false)"></div>
-        <!-- <transition name="slide"> -->
-        <!-- <div class="popup-content" v-show="show2"> -->
-        <!-- <div style="border-right:1px solid #ccc;overflow: auto;">
-              <option
-                @click="shi(item.id)"
-                value="item.name"     
-                v-for="item in shengfen"
-              >{{item.name}}</option>
-            </div>
-            <div style="overflow: auto;">
-              <option value="item.name" v-for="item in shil">
-                {{item.name}}
-              </option>
-        </div>-->
-
-        <!-- <el-form-item label="活动区域" :label-width="formLabelWidth"> -->
         <div style="display:flex;padding:0 0.88rem 0 0.7rem;">
           <el-select v-model="shengl" @change="shi()" placeholder="请选择省份">
             <el-option v-for="(item,key) in shengfen" :key="key" :value="item.name"></el-option>
@@ -53,17 +36,6 @@
             <el-option v-for="(item,key) in shil" :key="key" :value="item.name"></el-option>
           </el-select>
         </div>
-        <!-- </el-form-item> -->
-
-        <!-- <el-form-item label :label-width="formLabelWidth">
-            
-
-            <el-select v-model="form.city" placeholder="请选择区县">
-              <el-option v-for="(item,key) in s" :key="key" :value="item.area_name"></el-option>
-        </el-select>-->
-        <!-- </el-form-item> -->
-        <!-- </div> -->
-        <!-- </transition>  -->
       </div>
     </div>
     <br />
@@ -150,11 +122,6 @@ export default {
     hqyzm() {
       let mobile = this.phone;
       let txyzm = this.tyzm;
-      // axios.post(`https://api.it120.cc/small4/verification/pic/get?key=${this.time}`).then(res=>{
-      //   console.log(res)
-      // })
-      // console.log(txyzm)
-
       //  图形验证码手机号   手机发短信
       axios
         .post(
@@ -163,9 +130,6 @@ export default {
         .then(res => {
           console.log(res);
         });
-      //     _product.dxyz(mobile).then(res => {
-      //   console.log(res.data.data)
-      // });
     },
     qiehuan() {
       this.time = new Date().getTime();
@@ -177,8 +141,6 @@ export default {
           }
         )
         .then(response => {
-          // console.log(111111111);
-          // console.log(
           this.urlData =
             "data:image/png;base64," +
             btoa(
@@ -187,7 +149,6 @@ export default {
                 ""
               )
             );
-          // );
           // console.log(this.urlData)
         });
     },
@@ -198,9 +159,6 @@ export default {
       this.show2 = flag;
     },
     shi() {
-      // console.log(n)
-      // console.log(this.shengfen)
-      // console.log(this.shengl)
       let index = this.shengfen.filter(item => {
         return item.name == this.shengl;
       });
@@ -217,15 +175,8 @@ export default {
     }
   },
   created() {
-    // axios({
-    //   method: "post",
-    //   url: "https://api.it120.cc/small4/verification/pic/get",
-    //   responseType: "blob"
-    // }).then(res => {
-    //   this.urlData = window.URL.createObjectURL(res.data);
-    //   console.log(this.urlData);
-    // });
     this.time = new Date().getTime();
+
     axios
       .get(
         `https://api.it120.cc/small4/verification/pic/get?key=${this.time}`,
@@ -234,8 +185,6 @@ export default {
         }
       )
       .then(response => {
-        // console.log(111111111);
-        // console.log(
         this.urlData =
           "data:image/png;base64," +
           btoa(
@@ -244,20 +193,10 @@ export default {
               ""
             )
           );
-        // );
         // console.log(this.urlData)
       });
-    // axios.post("https://api.it120.cc/small4/verification/pic/get").then(response => {
-    //   return (
-    //     "data:image/png;base64," +
-    //     btoa(
-    //       new Uint8Array(response.data).reduce(
-    //         (data, byte) => data + String.fromCharCode(byte),
-    //         ""
-    //       )
-    //     )
-    //   );
-    // });
+
+    // 省份
     axios.post("https://api.it120.cc/common/region/province").then(res => {
       //  console.log(res.data)
       this.shengfen = res.data.data;
@@ -388,11 +327,11 @@ button {
   -o-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
-.el-input .el-input--suffix{
-    width: 50% !important;
-    margin: 0;
+.el-input .el-input--suffix {
+  width: 50% !important;
+  margin: 0;
 }
-.el-input__inner{
+.el-input__inner {
   width: 70%;
 }
 </style>

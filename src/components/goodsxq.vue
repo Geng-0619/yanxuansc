@@ -72,7 +72,7 @@
       </div>
     </div>
     <!--  -->
-    <div class="footerGoods">立即发起砍价，最低可砍到1元</div>
+    <div class="footerGoods" @click="kjGoods">立即发起砍价，最低可砍到1元</div>
     <!--  -->
   </div>
 </template>
@@ -104,7 +104,8 @@ export default {
       titleGoods: "",
       characteristic: "",
       Goodshow: true,
-      Pingj:[]
+      Pingj: [],
+      KjId: ""
     };
   },
   created() {
@@ -112,8 +113,18 @@ export default {
     _product.detail(id).then(res => {
       // console.log(res.data.data);
       this.GoodsName = res.data.data;
+      // console.log(this.GoodsName)
+      localStorage.setItem('Goodsxq',JSON.stringify(res.data.data))
       this.titleGoods = this.GoodsName.basicInfo.name;
       this.characteristic = this.GoodsName.basicInfo.characteristic;
+    });
+    // console.log(id)
+    _product.kjid().then(res => {
+      let kjid1 = res.data.data.result.filter(item => {
+        return item.goodsId == id;
+      });
+      // console.log(kjid1[0].id)
+      this.KjId = kjid1[0].id;
     });
 
     _product.Pingjia(id).then(res => {
@@ -123,6 +134,23 @@ export default {
         //  console.log(this.Pingj)
       }
     });
+  },
+  methods: {
+    kjGoods() {
+      let token = JSON.parse(localStorage.getItem('token'))
+      // console.log(token)
+      let obj = {
+        kjid:this.KjId,
+        token:token
+      }
+      _product.Fkj(obj).then(res => {
+        // console.log(res.data)
+        this.$router.push({
+          path:'/Kanjiaxq'
+        })
+        localStorage.setItem('Kjxq',JSON.stringify(res.data))
+      });
+    }
   }
 };
 </script>

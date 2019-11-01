@@ -1,34 +1,45 @@
 <template>
   <div class="home_box">
     <div
-      style="width:100%;text-align:center;height:0.7rem;border-bottom:1px solid #ccc;position: fixed;top:0;background:#ffffff;"
+      style="width:100%;text-align:center;height:0.7rem;border-bottom:1px solid #f5f5f5;position: fixed;top:0;background:#ffffff;"
     >
+        <!-- 编辑 -->
       <span style="float:left;" @click="ShowDel" v-show="!ShowDelGoods&&CartItemV != 0">编辑</span>
       <span style="float:left;" @click="ShowDel" v-show="ShowDelGoods&&CartItemV != 0">完成</span>
       <span>购物车</span>
       <span></span>
     </div>
-    <div v-show="CartItemV == 0" style="padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"> 
+    <!-- 判断购物车是否有商品 -->
+    <div v-show="CartItemV == 0" style="color:#ccc;padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"> 
         <i class="el-icon-shopping-cart-2" style="font-size:2rem;"></i>
         <span>去添加点什么吧</span>
     </div>
+    <!-- 判断购物车是否有商品 -->
     <div class="GoodsCartItem" v-show="CartItemV != 0">
+      <!-- 遍历展示商品 -->
       <div v-for="(item,index) in CartItemV" :key="index" style="display: flex;">
+        <!-- 商品前-复选框 -->
         <input type="checkbox" v-model="item.Goodscheck" @click="goodsCheck(index)" />
         <div>
-          <img :src="item.images" alt />
+          <img :src="item.images" alt /> 
         </div>
         <div style="padding:0 0.2rem;box-sizing:border-box;width:100%;">
+          <!-- 标题 -->
           <p>{{ item.titleGoods }}</p>
+          <!-- 内容 -->
           <p>{{ item.nameGoods }}</p>
           <p style="display:flex;justify-content: space-between;align-items: center;">
+            <!-- 价格 -->
             <span>{{ item.priceGoods }}</span>
             <span>
-              <button style="width:0.42rem;height:0.42rem;" @click="jian(index)">-</button>
-              <span>
-                <input type="text" style="width:0.6rem;" v-model="item.numGoods" />
-              </span>
-              <button style="width:0.42rem;height:0.42rem;" @click="jia(index)">+</button>
+              <!-- 按钮减 -->
+              <input type="button" value="-" style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;" @click="jian(index)">
+              <!-- <button >-</button> -->
+                <!-- 单个商品数量 -->
+                <input type="text" style="width:0.4rem;height:0.4rem;border:none;text-align:center;background:#fff;" v-model="item.numGoods" />
+              <!-- 商品加 -->
+              <input type="button" value="+" style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;" @click="jia(index)">
+              <!-- <button >+</button> -->
             </span>
 
             <!-- <el-input-number size="mini" v-model="item.numGoods" :min="1" label="描述文字"></el-input-number> -->
@@ -63,7 +74,6 @@ export default {
   },
   data() {
     return {
-      // CartItemV: [],
       AllcheckGoods: false,
       ShowDelGoods: false,
       AddgoodsJsonStr1:[],
@@ -73,9 +83,6 @@ export default {
   mounted() {
     this.$store.state.CartItem = JSON.parse(localStorage.getItem("Cart"));
     // console.log(this.CartItemV);
-    // if(this.CartItemV.length ==0){
-    //   this.$store.state.CartItemV=JSON.parse(localStorage.getItem("Cart"))
-    // }
   },
   computed: {
     CartItemV() {
@@ -107,20 +114,13 @@ export default {
         }
       }
       this.AllcheckGoods = false;
+      this.$store.commit("removeGoods");
       localStorage.setItem('Cart',JSON.stringify(this.CartItemV))
     },
     goodsCheck(n) {
-      // this.CartItemV.map(item => {
-      //   item.Goodscheck = !item.Goodscheck;
-      // });
+     
       this.CartItemV[n].Goodscheck = !this.CartItemV[n].Goodscheck;
-      // let b = 0;
-      // this.CartItemV.map(item => {
-      //   if (item.Goodscheck == true) {
-      //     b += item.numGoods * item.priceGoods;
-      //   }
-      // });
-      // this.$store.state.Allprice = b;
+     
       this.$store.commit("goodsCheck", n);
       if (this.CartItemV[n].Goodscheck == false) {
         this.AllcheckGoods = false;
@@ -162,7 +162,7 @@ export default {
         })
       })
         // console.log(JSON.stringify(this.AddgoodsJsonStr1))
-      console.log(this.AddgoodsJsonStr1)
+      // console.log(this.AddgoodsJsonStr1)
       localStorage.setItem('AddgoodsJsonS',JSON.stringify(this.AddgoodsJsonStr1))
     }
   }
@@ -188,7 +188,4 @@ export default {
   box-sizing: border-box;
   border: none;
 }
-// .GoodsCartItem{
-//   padding:0;
-// }
 </style>

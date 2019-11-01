@@ -66,7 +66,7 @@
   height: 3rem;
   border-top: 1px solid #ccc;
   font-size: 14px;
-  padding: 0.2rem;
+  padding: 0.2rem 0.4rem 0.2rem 0.2rem;
 }
 
 .kanjia_cont img {
@@ -77,8 +77,10 @@
 .kanjia_cont_tit {
   display: flex;
   flex-direction: column;
-  padding: 0 0.1rem;
   box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .kanjia_cont_tit p {
@@ -87,7 +89,7 @@
 }
 
 .kanjia_cont_price {
-  margin-top: 0.8rem !important;
+  margin-top: 0.7rem !important;
   display: flex;
   justify-content: space-between;
 }
@@ -116,4 +118,12 @@
 
 a {
   color: #B5B5B5;
+}
+
+.crit {
+  width: 0.32rem;
+  height: 0.32rem;
+  border: 1px solid #CCC;
+  border-radius: 50%;
+  text-align: center;
 }

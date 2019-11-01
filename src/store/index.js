@@ -9,7 +9,8 @@ const store = new Vuex.Store({
         NumStore: '',
         Allprice: 0,
         Allch: false,
-        Shouhuo:[]
+        Shouhuo:[],
+        KjaPrice:[]
     },
     mutations: {
         AddCartI(state, n) {
@@ -61,6 +62,15 @@ const store = new Vuex.Store({
                 }
             })
             state.Allprice = b
+        },
+        removeGoods(state){
+            let c = 0;
+            state.CartItem.map(item => {
+                if (item.Goodscheck == true) {
+                    c += item.numGoods * item.priceGoods
+                }
+            })
+            state.Allprice = c
         },
         jian(state, n) {
             if (state.CartItem[n].numGoods > 0) {

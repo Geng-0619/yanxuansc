@@ -1,23 +1,22 @@
 <template>
   <div style="display: flex;flex-direction: column;">
     <div class="qmkj_header">
-      <span>
+      <span style="font-size:0.35rem;float:left;">
         <router-link to="/home/fenlei">
-          <i class="el-icon-arrow-left" style="float:left;margin-top:0.2rem;"></i>
+          <i class="el-icon-arrow-left" style="color:#000;"></i>
         </router-link>
       </span>
       <span>分类商品</span>
-      <span></span>
     </div>
 
     <div class="qmkj_cont">
-      <div v-show="spxqSh" style="margin:70% 0;text-align:center">
+      <div v-show="!spxqSh" style="margin:70% 0;text-align:center">
         <h1>还没有商品呢</h1>
       </div>
 
-      <div  class="cont_spxq">
-        <div v-for="(item,i) in SpXq" :key="i" style="display:flex;margin-top:0.8rem;flex-direction: column;width:48%;padding-left:0.1rem;">
-          <router-link :to="{path: '/tjxq',query:{id:item.id}}"><img :src="item.pic" alt style="width:100%;"/></router-link>
+      <div class="cont_spxq" v-show="spxqSh">
+        <div v-for="(item,i) in SpXq" :key="i" style="display:flex;flex-direction: column;width:48%;padding-left:0.1rem;">
+          <router-link :to="{path: '/tjxq',query:{id:item.id}}"><img :src="item.pic" alt style="width:100%;height:3.6rem;"/></router-link>
           {{ item.name }}
           <br>
           <span>
@@ -26,6 +25,7 @@
           </span>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -43,13 +43,19 @@ export default {
   },
   created() {
     let id = this.$route.query.id;
-    console.log(id);
+    // console.log(id);
     _product.propTj().then(res => {
       // console.log(res.data.data);
+      // if(res.data.data.length != 0){
+      //   this.spxqSh = true
+      // }
       this.SpXq = res.data.data.filter(item => {
         return item.categoryId == id;
       });
-      console.log(this.SpXq)
+       if(this.SpXq.length != 0){
+        this.spxqSh = true
+      }
+      // console.log(this.SpXq)
     });
   }
 };
@@ -59,10 +65,12 @@ export default {
 .qmkj_header {
   width: 100%;
   height: 1rem;
-  background: #ccc;
+  background: #fff;
   box-sizing: border-box;
   line-height: 1rem;
   text-align: center;
+  font-size: 0.26rem;
+  padding: 0 0.2rem;
 }
 .qmkj_cont {
   flex: 1;

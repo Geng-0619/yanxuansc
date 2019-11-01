@@ -1,0 +1,25 @@
+body, html, ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.my .my-header {
+  width: 7.5rem;
+  height: 1.04rem;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  border-bottom: 0.01rem solid #efefef;
+  line-height: 1.04rem;
+}
+
+.my .my-header span:nth-child(1) {
+  margin-left: 0.5rem;
+}
+
+.my .my-header span:nth-child(2) {
+  margin-left: 2rem;
+}

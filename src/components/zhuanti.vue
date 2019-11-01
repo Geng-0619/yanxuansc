@@ -2,7 +2,8 @@
   <div style="padding:0 0.2rem;">
     <p class="home_comt_tuijian">
       <router-link to='/jingxuan'>精选专题</router-link>
-      <i class="el-icon-arrow-right"></i>
+      <span class="crit"><i class="el-icon-arrow-right"></i></span>
+     
     </p>
     <div class="home_zt">
       <p v-for="(item,index) in propZt" :key="index" style="width:85%;display:inline-block;padding:0 0.1rem;box-sizing:border-box;">
