@@ -44,15 +44,22 @@ export default {
         deviceId: "007",
         deviceName: "monkey"
       };
+      console.log();
+      // let redi =
       _product.Login(obj).then(res => {
-        console.log(res);
+        // console.log(this.$route.query.redi);
+        let redi = this.$route.query.redi;
         if (res.data.code == 0) {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.$store.state.itemToken = res.data.data.token;
           localStorage.setItem("token", JSON.stringify(res.data.data.token));
-          this.$router.push({
-            path: "/myhome"
-          });
+          if (redi == 1) {
+            this.$router.push("/SubGoods")
+          } else {
+            this.$router.push({
+              path: "/myhome"
+            });
+          }
         }
       });
     },

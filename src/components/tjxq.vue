@@ -142,6 +142,7 @@ import Product from "../services/product-service.js";
 const _product = new Product();
 import axios from "axios";
 import { Dialog } from 'vant';
+import { Toast } from 'vant';
 export default {
   name: "fenlei",
   data() {
@@ -299,6 +300,7 @@ export default {
             propertyChildIds: pric.propertyChildIds
           };
           this.$store.commit("AddCartI", obj);
+          Toast.success('加入购物车成功');
           this.Tjcart = false;
         });
       } else {

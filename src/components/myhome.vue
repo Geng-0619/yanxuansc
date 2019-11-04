@@ -84,7 +84,7 @@
         <span>
           <i class="el-icon-map-location" style="font-size: 0.6rem;"></i>
         </span>
-        <span class="Mh_n">我的地址</span>
+        <span class="Mh_n" @click="dzwd">我的地址</span>
       </div>
       <div>
         <span>
@@ -127,6 +127,11 @@ export default {
   computed: {
     userToken() {
       return this.$store.state.itemToken;
+    }
+  },
+  methods: {
+    dzwd(){
+      this.$router.push('/myaddress')
     }
   }
 };

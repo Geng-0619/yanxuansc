@@ -3,27 +3,40 @@
     <div
       style="width:100%;text-align:center;height:0.7rem;border-bottom:1px solid #f5f5f5;position: fixed;top:0;background:#ffffff;"
     >
-        <!-- 编辑 -->
+      <!-- 编辑 -->
       <span style="float:left;" @click="ShowDel" v-show="!ShowDelGoods&&CartItemV != 0">编辑</span>
       <span style="float:left;" @click="ShowDel" v-show="ShowDelGoods&&CartItemV != 0">完成</span>
       <span>购物车</span>
       <span></span>
     </div>
+
     <!-- 判断购物车是否有商品 -->
-    <div v-show="CartItemV == 0" style="color:#ccc;padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"> 
-        <i class="el-icon-shopping-cart-2" style="font-size:2rem;"></i>
-        <span>去添加点什么吧</span>
+    <div
+      v-show="CartItemV == 0"
+      style="color:#ccc;padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"
+    >
+      <i class="el-icon-shopping-cart-2" style="font-size:2rem;"></i>
+      <span>去添加点什么吧</span>
     </div>
-    <!-- 判断购物车是否有商品 -->
-    <div class="GoodsCartItem" v-show="CartItemV != 0">
+    <!-- 判断购物车是否有商品11111 -->
+    <div class="GoodsCartItem" style="overflow: hidden;" v-show="CartItemV != 0">
       <!-- 遍历展示商品 -->
-      <div v-for="(item,index) in CartItemV" :key="index" style="display: flex;">
+
+      <div
+        ref="ccc"
+        class="sssd"
+        v-for="(item,index) in CartItemV"
+        :key="index"
+        @touchstart="zhleft1($event)"
+        @touchmove="zhleft($event,index)"
+        style="display: flex;transition: all 1s;"
+      >
         <!-- 商品前-复选框 -->
         <input type="checkbox" v-model="item.Goodscheck" @click="goodsCheck(index)" />
-        <div>
-          <img :src="item.images" alt /> 
+        <div style="padding-left:0.5rem;">
+          <img :src="item.images" alt />
         </div>
-        <div style="padding:0 0.2rem;box-sizing:border-box;width:100%;">
+        <div style="padding:0 0.3rem;box-sizing:border-box;width:9000%;">
           <!-- 标题 -->
           <p>{{ item.titleGoods }}</p>
           <!-- 内容 -->
@@ -33,21 +46,34 @@
             <span>{{ item.priceGoods }}</span>
             <span>
               <!-- 按钮减 -->
-              <input type="button" value="-" style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;" @click="jian(index)">
-              <!-- <button >-</button> -->
-                <!-- 单个商品数量 -->
-                <input type="text" style="width:0.4rem;height:0.4rem;border:none;text-align:center;background:#fff;" v-model="item.numGoods" />
+              <input
+                type="button"
+                value="-"
+                style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;"
+                @click="jian(index)"
+              />
+              <!-- 单个商品数量 -->
+              <input
+                type="text"
+                style="width:0.42rem;height:0.32rem;border:none;text-align:center;background:#fff;"
+                v-model="item.numGoods"
+              />
               <!-- 商品加 -->
-              <input type="button" value="+" style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;" @click="jia(index)">
-              <!-- <button >+</button> -->
+              <input
+                type="button"
+                value="+"
+                style="width:0.42rem;height:0.42rem;border:1px solid #ccc;background:#fff;"
+                @click="jia(index)"
+              />
             </span>
-
-            <!-- <el-input-number size="mini" v-model="item.numGoods" :min="1" label="描述文字"></el-input-number> -->
           </p>
         </div>
+        <div class="remove_cart" @click="removedel(index)">删除</div>
       </div>
     </div>
-    <div v-show="CartItemV != 0"
+
+    <div
+      v-show="CartItemV != 0"
       style="height:0.7rem;background:#ffffff;width:100%;font-size:0.2rem;position: fixed;bottom:1rem;display:flex;justify-content: space-between;"
     >
       <span style="line-height: 0.7rem;">
@@ -55,9 +81,9 @@
       </span>
       <div>
         <span>合计：￥{{ Allprice1 }}</span>
-        <router-link to="/SubGoods">
-          <button class="GoodsXd" v-show="!ShowDelGoods" @click="AddgoodsJsonStr">下单</button>
-        </router-link>
+        <!-- <router-link to="/SubGoods"> -->
+        <button class="GoodsXd" v-show="!ShowDelGoods" @click="AddgoodsJsonStr">下单</button>
+        <!-- </router-link> -->
         <button class="GoodsXd" v-show="ShowDelGoods" @click="removeGoods">删除</button>
       </div>
     </div>
@@ -66,18 +92,22 @@
 </template>
 
 <script>
-import cnxh from './cainixihuan'
+import cnxh from "./cainixihuan";
+import { Dialog } from "vant";
 export default {
   name: "vartC",
-  components:{
-      cnxh 
+  components: {
+    cnxh
   },
   data() {
     return {
       AllcheckGoods: false,
       ShowDelGoods: false,
-      AddgoodsJsonStr1:[],
-      CartItemV1:[]
+      AddgoodsJsonStr1: [],
+      CartItemV1: [],
+      startC: "",
+      endC: "",
+      ss: ""
     };
   },
   mounted() {
@@ -86,13 +116,41 @@ export default {
   },
   computed: {
     CartItemV() {
-      return this.$store.state.CartItem
+      return this.$store.state.CartItem;
     },
     Allprice1() {
       return this.$store.state.Allprice;
     }
   },
+  // updated() {
+  //     this.zhleft()
+  // },
   methods: {
+    removedel(n) {
+      this.CartItemV.splice(n, 1);
+      localStorage.setItem("Cart", JSON.stringify(this.CartItemV));
+    },
+    zhleft1(e) {
+      // console.log(e.changedTouches[0].clientX)
+      this.startC = e.changedTouches[0].clientX;
+    },
+    zhleft(e, i) {
+      this.ss = i;
+      // console.log(e.changedTouches[0].clientX)
+      this.endC = e.changedTouches[0].clientX;
+      // console.log(this.startC)
+      // console.log(this.endC)
+      if (this.startC - this.endC > 0) {
+        this.$refs.ccc.map(item => {
+          item.style.left = "0rem";
+        });
+        this.$refs.ccc[i].style.left = "-3rem";
+        // console.log(this.$refs.ccc[i].style)
+      }
+      if (this.startC - this.endC < 0) {
+        this.$refs.ccc[i].style.left = "0rem";
+      }
+    },
     Allcheck() {
       this.AllcheckGoods = !this.AllcheckGoods;
       this.$store.commit("Allcheck", this.AllcheckGoods);
@@ -115,12 +173,11 @@ export default {
       }
       this.AllcheckGoods = false;
       this.$store.commit("removeGoods");
-      localStorage.setItem('Cart',JSON.stringify(this.CartItemV))
+      localStorage.setItem("Cart", JSON.stringify(this.CartItemV));
     },
     goodsCheck(n) {
-     
       this.CartItemV[n].Goodscheck = !this.CartItemV[n].Goodscheck;
-     
+
       this.$store.commit("goodsCheck", n);
       if (this.CartItemV[n].Goodscheck == false) {
         this.AllcheckGoods = false;
@@ -147,23 +204,46 @@ export default {
     jia(n) {
       this.$store.commit("jia", n);
     },
-    AddgoodsJsonStr(){
+    AddgoodsJsonStr() {
       // console.log(this.CartItemV)
-      let GoodscheckI = this.CartItemV.filter(item => {
-        return item.Goodscheck == true
-      })
-      GoodscheckI.map(item => {
-        // console.log(item)
-        this.AddgoodsJsonStr1.push({
-          goodsId : item.goodsId,
-          number : item.numGoods,
-          propertyChildIds : item.propertyChildIds
-          //  propertyChildids : "5351:17890,"
-        })
-      })
-        // console.log(JSON.stringify(this.AddgoodsJsonStr1))
-      // console.log(this.AddgoodsJsonStr1)
-      localStorage.setItem('AddgoodsJsonS',JSON.stringify(this.AddgoodsJsonStr1))
+      let token = JSON.parse(localStorage.getItem("token"));
+      if (token == null) {
+        this.$router.push({
+          path: "/login",
+          query: { redi: 1 }
+        });
+      } else {
+        let j = this.CartItemV.every(item => {
+          return item.Goodscheck == false;
+        });
+        // console.log(j);
+        if (j == false) {
+          let GoodscheckI = this.CartItemV.filter(item => {
+            return item.Goodscheck == true;
+          });
+          GoodscheckI.map(item => {
+            // console.log(item)
+            this.AddgoodsJsonStr1.push({
+              goodsId: item.goodsId,
+              number: item.numGoods,
+              propertyChildIds: item.propertyChildIds
+            });
+          });
+          this.$router.push("/SubGoods");
+          localStorage.setItem(
+            "AddgoodsJsonS",
+            JSON.stringify(this.AddgoodsJsonStr1)
+          );
+        } else {
+          Dialog.alert({
+            title: "错误",
+            message: "请选择商品！"
+          }).then(() => {
+            // on close
+          });
+          return false;
+        }
+      }
     }
   }
 };
@@ -174,6 +254,10 @@ export default {
   padding: 1rem 0;
   box-sizing: border-box;
   font-size: 0.2rem;
+}
+.sssd {
+  position: relative;
+  left: 0rem;
 }
 .GoodsCartItem img {
   width: 1rem !important;
@@ -187,5 +271,16 @@ export default {
   line-height: 0.7rem;
   box-sizing: border-box;
   border: none;
+}
+.remove_cart {
+  width: 3rem;
+  height: 1rem;
+  background: red;
+  text-align: center;
+  line-height: 1rem;
+  box-sizing: border-box;
+  color: #fff;
+  position: absolute;
+  right: -3rem;
 }
 </style>

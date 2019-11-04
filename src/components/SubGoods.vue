@@ -139,6 +139,8 @@ export default {
         if (res.data.code == 0) {
           this.ShowDiz = res.data.data;
           // console.log( this.ShowDiz)
+        }else{
+          this.shoudz = true
         }
       });
     let aa = JSON.parse(localStorage.getItem("Cart"));
