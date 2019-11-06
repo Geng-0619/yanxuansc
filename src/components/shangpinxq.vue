@@ -71,10 +71,13 @@ export default {
   text-align: center;
   font-size: 0.26rem;
   padding: 0 0.2rem;
+  position: fixed;
+  top: 0;
 }
 .qmkj_cont {
   flex: 1;
   overflow: auto;
+  padding: 1.1rem 0;
 }
 .cont_spxq{
   display: flex;

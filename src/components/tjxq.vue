@@ -259,8 +259,8 @@ export default {
       this.$router.go(-1)
     },
     AddCartI() {
-      let arr = JSON.parse(localStorage.getItem("Cart"));
-      if (arr == null) {
+      let arrItem = JSON.parse(localStorage.getItem("Cart"));
+      if (arrItem == null) {
         let box = [];
         localStorage.setItem("Cart", JSON.stringify(box));
       } else {
@@ -282,28 +282,27 @@ export default {
             Dialog.alert({
               title: "提示",
               message: "请选择商品规格"
-            }).then(() => {
-              // on close
-            });
+            })
             // alert("请选择尺寸");
             return false;
           }
-          let pric = res.data.data;
-          let obj = {
+          let pric1 = res.data.data;
+          let obj1 = {
             images: this.ztxq.basicInfo.pic,
             nameGoods: this.ztxq.properties[0].name + this.nameGs,
             titleGoods: this.ztxq.basicInfo.name,
-            priceGoods: pric.price,
+            priceGoods: pric1.price,
             numGoods: this.num,
             Goodscheck: false,
-            goodsId: pric.goodsId,
-            propertyChildIds: pric.propertyChildIds
+            goodsId: pric1.goodsId,
+            propertyChildIds: pric1.propertyChildIds
           };
-          this.$store.commit("AddCartI", obj);
+          this.$store.commit("AddCartI", obj1);
           Toast.success('加入购物车成功');
           this.Tjcart = false;
         });
-      } else {
+      } 
+      if (this.ztxq.properties.length == 2) {
         let arr1 = {
           GoodsId: this.GoodsId,
           ColId: this.ColId,
@@ -317,23 +316,23 @@ export default {
             Dialog.alert({
               title: "提示",
               message: "请选择商品规格"
-            }).then(() => {
-              // on close
-            });
+            })
             return false;
           }
-          let pric = res.data.data;
-          let obj = {
+          let pric2 = res.data.data;
+         
+          let obj2 = {
             images: this.ztxq.basicInfo.pic,
             nameGoods: this.ztxq.properties[0].name + this.nameGs,
             titleGoods: this.ztxq.basicInfo.name,
-            priceGoods: pric.price,
+            priceGoods: pric2.price,
             numGoods: this.num,
             Goodscheck: false,
-            goodsId: pric.goodsId,
-            propertyChildIds: pric.propertyChildIds
+            goodsId: pric2.goodsId,
+            propertyChildIds: pric2.propertyChildIds
           };
-          this.$store.commit("AddCartI", obj);
+          //  console.log(obj2.nameGoods)
+          this.$store.commit("AddCartI", obj2);
           this.Tjcart = false;
         });
       }

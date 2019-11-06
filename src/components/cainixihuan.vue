@@ -32,7 +32,6 @@ export default {
         return item.pingtuan == true;
       });
       this.cnxh = c.slice(0, 4);
-      // console.log(this.cnxh);
     });
   }
 };

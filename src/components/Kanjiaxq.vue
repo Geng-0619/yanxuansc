@@ -22,7 +22,7 @@
 
               <s style="color:#8E8F90;font-size:0.24rem;margin-left:.3rem;">
                 原价￥
-                {{ kanjia.data.curPrice }} 
+                {{ kanjia.data.curPrice }}
               </s>
             </p>
           </div>
@@ -53,7 +53,8 @@
           <button
             style="font-size:0.26rem;background:#989389;border:none;padding:0.2rem 0.6rem;color:#fff; border-radius: 5px;margin-top:0.4rem;"
           >以当前价购买</button>
-          <button @click="Kjfx=true"
+          <button
+            @click="Kjfx=true"
             style="font-size:0.26rem;border:1px solid #B3A079;background:#CFBF9E;color:#C8AA7E;padding:0.2rem 0.2rem; border-radius: 5px;"
           >邀请好友砍价</button>
         </div>
@@ -64,15 +65,17 @@
       <p style="text-align:center;font-size:0.26rem;color:#C8AA7E;padding:0.2rem 0;">{{ CutP }}名好友帮砍</p>
       <div class="kj_address" v-show="Kshow">
         <div style="width:20%;">
-          <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt style="width:70%;padding:0.25rem 0.2rem;"/>
+          <img
+            src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+            alt
+            style="width:70%;padding:0.25rem 0.2rem;"
+          />
         </div>
         <div style="width:50%;display:flex;justify-content: space-around;flex-direction: column;">
-                <p>{{ name }}</p>
-                <p>{{ kanjia.data.dateUpdate }}</p>
+          <p>{{ name }}</p>
+          <p>{{ kanjia.data.dateUpdate }}</p>
         </div>
-        <div style="width:30%;line-height: 1.5rem;">
-            砍掉{{ this.cutPrice }} 元
-        </div>
+        <div style="width:30%;line-height: 1.5rem;">砍掉{{ this.cutPrice }} 元</div>
       </div>
     </div>
 
@@ -86,16 +89,19 @@
       </div>
       <div style="margin-top:.6rem;display:flex;justify-content: space-evenly;">
         <div class="Kj_foot">
-          <span class="Kj_cr"><span class="el-icon-edit-outline"></span></span>
+          <span class="Kj_cr">
+            <span class="el-icon-edit-outline"></span>
+          </span>
           <span style="font-size:0.1rem;color:#b3a078;">邀请好友</span>
         </div>
         <div class="Kj_foot">
-          <span class="Kj_cr"><span class="el-icon-picture-outline"></span></span>
+          <span class="Kj_cr">
+            <span class="el-icon-picture-outline"></span>
+          </span>
           <span style="font-size:0.1rem;color:#b3a078;">生成二维码</span>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -113,8 +119,9 @@ export default {
       title: "",
       cutPrice: "",
       Kshow: false,
-      CutP:0,
-      Kjfx:true
+      CutP: 0,
+      Kjfx: true,
+      Uid: []
     };
   },
   methods: {
@@ -128,16 +135,13 @@ export default {
       _product.Kjxq(obj).then(res => {
         // console.log(res.data.data)
         this.cutPrice = res.data.data.cutPrice;
-        // let list = JSON.parse(localStorage.getItem("KjPrice"));
-        // list.push(res.data.data.cutPrice);
-        // this.cutPrice = list;
-        this.CutP++
+        this.CutP++;
         localStorage.setItem("KjPrice", JSON.stringify(this.cutPrice));
       });
       this.Kshow = true;
     },
-    shyj(){
-        this.$router.go(-1)
+    shyj() {
+      this.$router.go(-1);
     }
   },
   computed: {
@@ -156,14 +160,6 @@ export default {
     this.pic = g.basicInfo.pic;
     this.title = g.basicInfo.name;
     // console.log(this.pic)
-
-    // let arr = JSON.parse(localStorage.getItem("KjPrice"));
-    // if (arr == null) {
-    //   let box = [];
-    //   localStorage.setItem("KjPrice", JSON.stringify(box));
-    // } else {
-    //   this.cutPrice = JSON.parse(localStorage.getItem("KjPrice"));
-    // }
   }
 };
 </script>

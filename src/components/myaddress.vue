@@ -8,13 +8,14 @@
     </div>
     <div style="padding:1.5rem 0 0 0;">
       <div v-for="(item,i) in dizhilb" :key="i" >
-          <div class="SubGoods_shdz" style="display:flex;justify-content: space-between;align-items: center;font-size:0.2rem;height:1rem;border-bottom:1px solid #ccc;padding:0.2rem 0.3rem;">
-            <div style="display:flex;flex-direction: column;">
+          <div class="SubGoods_shdz" style="display:flex;align-items: center;font-size:0.2rem;height:1rem;border-bottom:1px solid #ccc;padding:0.2rem 0.3rem;">
+            <!-- <input type="radio" name="a" id="" style="width:10%;"> -->
+            <div style="display:flex;flex-direction: column;width:75%;">
               <span>{{item.linkMan}}{{item.mobile}}</span>
               <br>
               <span>{{item.address}}</span>
             </div>
-            <i class="el-icon-edit-outline" @click="xjdz" style="font-size:0.4rem;"></i>
+            <i class="el-icon-edit-outline" @click="xjdz" style="font-size:0.4rem;display:block;width:15%;"></i>
           </div>
       </div>
     </div>
@@ -54,4 +55,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 </style>

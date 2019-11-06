@@ -4,22 +4,28 @@
       style="width:100%;text-align:center;height:0.7rem;border-bottom:1px solid #f5f5f5;position: fixed;top:0;background:#ffffff;"
     >
       <!-- 编辑 -->
-      <span style="float:left;" @click="ShowDel" v-show="!ShowDelGoods&&CartItemV != 0">编辑</span>
-      <span style="float:left;" @click="ShowDel" v-show="ShowDelGoods&&CartItemV != 0">完成</span>
+      <span style="float:left;" @click="ShowDel" v-show="!ShowDelGoods&&CartItemV != ''">编辑</span>
+      <span style="float:left;" @click="ShowDel" v-show="ShowDelGoods&&CartItemV != ''">完成</span>
       <span>购物车</span>
       <span></span>
+    </div>
+    <div
+      style="position: absolute; top: 4.5rem; left: 2rem; background: #000; opacity: 0.5; width: 50%; height: 20%; text-align:center; font-size: 0.5rem;box-sizing:border-box;padding-top:.5rem;"
+      v-show="issLoading"
+    >
+      <van-loading size="50px" color="#F9B600" vertical><span style="color:#F9B600;">商品加载中...</span></van-loading>
     </div>
 
     <!-- 判断购物车是否有商品 -->
     <div
-      v-show="CartItemV == 0"
+      v-show="CartItemV == ''"
       style="color:#ccc;padding:1.5rem;display:flex;flex-direction: column;align-items: center;background:#f5f5f5;"
     >
       <i class="el-icon-shopping-cart-2" style="font-size:2rem;"></i>
       <span>去添加点什么吧</span>
     </div>
     <!-- 判断购物车是否有商品11111 -->
-    <div class="GoodsCartItem" style="overflow: hidden;" v-show="CartItemV != 0">
+    <div class="GoodsCartItem" style="overflow: hidden;" v-show="CartItemV != ''">
       <!-- 遍历展示商品 -->
 
       <div
@@ -29,7 +35,7 @@
         :key="index"
         @touchstart="zhleft1($event)"
         @touchmove="zhleft($event,index)"
-        style="display: flex;transition: all 1s;"
+        style="display: flex;transition: all 500ms;"
       >
         <!-- 商品前-复选框 -->
         <input type="checkbox" v-model="item.Goodscheck" @click="goodsCheck(index)" />
@@ -94,6 +100,7 @@
 <script>
 import cnxh from "./cainixihuan";
 import { Dialog } from "vant";
+import { Loading } from "vant";
 export default {
   name: "vartC",
   components: {
@@ -107,7 +114,8 @@ export default {
       CartItemV1: [],
       startC: "",
       endC: "",
-      ss: ""
+      ss: "",
+      issLoading: false
     };
   },
   mounted() {
@@ -129,6 +137,7 @@ export default {
     removedel(n) {
       this.CartItemV.splice(n, 1);
       localStorage.setItem("Cart", JSON.stringify(this.CartItemV));
+      this.$refs.ccc[n].style.left = "0rem";
     },
     zhleft1(e) {
       // console.log(e.changedTouches[0].clientX)
@@ -205,6 +214,7 @@ export default {
       this.$store.commit("jia", n);
     },
     AddgoodsJsonStr() {
+      this.issLoading = true;
       // console.log(this.CartItemV)
       let token = JSON.parse(localStorage.getItem("token"));
       if (token == null) {
@@ -218,28 +228,34 @@ export default {
         });
         // console.log(j);
         if (j == false) {
-          let GoodscheckI = this.CartItemV.filter(item => {
-            return item.Goodscheck == true;
-          });
-          GoodscheckI.map(item => {
-            // console.log(item)
-            this.AddgoodsJsonStr1.push({
-              goodsId: item.goodsId,
-              number: item.numGoods,
-              propertyChildIds: item.propertyChildIds
+          this.issLoading = true;
+          let time = setTimeout(() => {
+            let GoodscheckI = this.CartItemV.filter(item => {
+              return item.Goodscheck == true;
             });
-          });
-          this.$router.push("/SubGoods");
-          localStorage.setItem(
-            "AddgoodsJsonS",
-            JSON.stringify(this.AddgoodsJsonStr1)
-          );
+            GoodscheckI.map(item => {
+              // console.log(item)
+              this.AddgoodsJsonStr1.push({
+                goodsId: item.goodsId,
+                number: item.numGoods,
+                propertyChildIds: item.propertyChildIds
+              });
+            });
+            this.$router.push("/SubGoods");
+            localStorage.setItem(
+              "AddgoodsJsonS",
+              JSON.stringify(this.AddgoodsJsonStr1)
+            );
+            this.issLoading = false;
+          }, 2000);
         } else {
+          this.issLoading = false;
           Dialog.alert({
             title: "错误",
             message: "请选择商品！"
           }).then(() => {
             // on close
+            // alert(2);
           });
           return false;
         }

@@ -20,10 +20,12 @@ import Shouhuo from '@/components/shouhuo'
 import payHome from '@/components/payHome'
 import myaddress from '@/components/myaddress'
 import Kanjiaxq from '@/components/Kanjiaxq'
+import Dingxq from '@/components/dingxq'
 Vue.use(Router)
 
 export default new Router({
   mode: "history",
+  base:"/YaNo/",
   routes: [
     {
       path: '/about',
@@ -108,6 +110,10 @@ export default new Router({
     {
       path: '/payHome',
       component: payHome
+    },
+    {
+      path: '/Dingxq',
+      component: Dingxq
     },
     {
       path: '/SubGoods',

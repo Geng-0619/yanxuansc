@@ -139,6 +139,16 @@ class Product {
         })
     }
 
+    Dgxq(token){
+        return _http.request({
+            type: 'post',
+            url: '/order/list',
+            data:{
+                token: token
+            }
+        })
+    }
+
     
     Fkj(n){
         return _http.request({
@@ -162,6 +172,7 @@ class Product {
             }
         })
     }
+   
 
     Login(n){
         return _http.request({

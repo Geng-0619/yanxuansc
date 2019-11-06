@@ -19,7 +19,7 @@
     <p class="myh_lb">🔈新上线更稳定的付费快递查询接口</p>
     <p style="width:100%;height:0.2rem;background:#f5f5f5;margin:0;"></p>
     <p class="myh_di">
-      <span class="fontM">
+      <span class="fontM" @click="dingdanxq">
         <i class="el-icon-tickets" style="font-size: 0.4rem;"></i>我的订单
       </span>
       <span>
@@ -132,6 +132,9 @@ export default {
   methods: {
     dzwd(){
       this.$router.push('/myaddress')
+    },
+    dingdanxq(){
+      this.$router.push('/Dingxq')
     }
   }
 };

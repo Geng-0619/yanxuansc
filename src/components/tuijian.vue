@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;height:11rem;padding-bottom:0.8rem;">
+  <div style="width:100%;height:11rem;padding-bottom:1.2rem;">
     <p class="home_comt_tuijian">
       人气推荐
       <span class="crit"><i class="el-icon-arrow-right"></i></span>
